@@ -4,10 +4,10 @@ import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 const IndexScreen = ({ navigation }) => {
     return (
         <View>
-            <Text style={styles.text}>Hi there! This is a test</Text>
+            <Text style={styles.text}>(Aquí iría el carrito de pago)</Text>
             <Button
-                onPress={() => navigation.navigate('Register')}
-                title="Registro"
+                onPress={() => navigation.navigate('Payment')}
+                title="Pagar"
             />
         </View>
     );

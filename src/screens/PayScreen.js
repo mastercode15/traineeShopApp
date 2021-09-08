@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const RegisterPage = () => {
+const PayPage = () => {
     return (
         <View>
-            <Text>Aqui va el registro</Text>
+            <Text>Aqui añadiré la forma para el pago</Text>
         </View>
     );
 };
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default RegisterPage;
+export default PayPage;
