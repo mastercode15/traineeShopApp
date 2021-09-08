@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Button, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
-const RegisterPage = () => {
+const RegisterScreen = () => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -116,4 +116,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegisterPage;
+export default RegisterScreen;
