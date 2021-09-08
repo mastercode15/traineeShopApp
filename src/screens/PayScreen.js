@@ -15,7 +15,7 @@ const PayPage = () => {
         
             <Modal animationType="slide" transparent={true} visible={modalOpen} onRequestClose={() => { setModalOpen(!modalOpen); }}> 
               <View>
-                <Text>Aqui sale el mensaje sobre el método de pago</Text>
+                <Text>Aquí sale el mensaje sobre el método de pago</Text>
                 <Pressable onPress={() => {setModalOpen(!modalOpen);setBtnDis(!btnDis);}}>
                   <Text>OK</Text>
                 </Pressable>
