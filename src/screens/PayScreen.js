@@ -1,14 +1,30 @@
 import React, {useState} from 'react';
-import { View, TextInput, StyleSheet, Text, Picker, Button } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Picker, Button, Modal, Pressable } from 'react-native';
+
+//https://stackoverflow.com/questions/44046037/if-else-statement-inside-jsx-reactjs
+//const savedpays = [{type : 0, foot : "1234"}];
 
 const PayPage = () => {
     const [selectedType, setSelectedType] = useState("banks");
     const [selectedBank, setSelectedBank] = useState("bank1");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [btnDis, setBtnDis] = useState(false);
 
     return (
         <View>
+        
+            <Modal animationType="slide" transparent={true} visible={modalOpen} onRequestClose={() => { setModalOpen(!modalOpen); }}> 
+              <View>
+                <Text>Aqui sale el mensaje sobre el método de pago</Text>
+                <Pressable onPress={() => {setModalOpen(!modalOpen);setBtnDis(!btnDis);}}>
+                  <Text>OK</Text>
+                </Pressable>
+              </View>
+            </Modal>
+        
+        
             <Text>Dirección:</Text>
-            <TextInput maxLength={100} placeholder="Escriba la dirección para la factura"/>
+            <TextInput maxLength={100} placeholder="Escriba aquí la dirección para la factura"/>
 
             <Text>Valor a pagar:</Text>
             <TextInput value = "$150.00" editable = {false} />
@@ -29,18 +45,10 @@ const PayPage = () => {
             <Text>Ingrese su cuenta o tarjeta:</Text>
             <TextInput maxLength={16} keyboardType={'numeric'} placeholder="Ej: 1000000000 / 4500123412341234"/>
 
-            <Button title="Verificar" />
-
-            <Button title="Pagar" />
+            <Button disabled = {btnDis} onPress={() => {setModalOpen(!modalOpen);setBtnDis(!btnDis);}} title="Realizar pago" />
 
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    textStyle: {
-        marginVertical: 50
-    }
-});
 
 export default PayPage;
