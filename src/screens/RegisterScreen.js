@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Button, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 
 const RegisterScreen = () => {
     const [name, setName] = useState('');
@@ -28,74 +28,74 @@ const RegisterScreen = () => {
     }
     return (
         <SafeAreaView style={styles.container} >
-            <Text style={styles.title}>Información Personal</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Nombre y Apellido"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={name}
-                onChangeText={(newValue) => setName(newValue)}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Celular"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={phone}
-                onChangeText={(newValue) => setPhone(newValue)}
-                keyboardType="phone-pad"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={email}
-                onChangeText={(newValue) => setEmail(newValue)}
-            />
-            <Text style={styles.title}>Información de Envío</Text>
-            <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="Dirección"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={direction}
-                onChangeText={(newValue) => setDirection(newValue)}
-            />
-            <Text style={styles.title}>Información de Inicio de Sesión</Text>
-            <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="Cédula"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={ci}
-                onChangeText={(newValue) => setCi(newValue)}
-            />
-            <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="Contraseña"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={password}
-                onChangeText={(newValue) => setPassword(newValue)}
-            />
-            <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="Confirmar contraseña"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={password1}
-                onChangeText={(newValue) => setPassword1(newValue)}
-            />
-            <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                <Text style={styles.loginText}>Iniciar sesión</Text>
-            </TouchableOpacity>
-
+            <ScrollView>
+                <Text style={styles.title}>Información Personal</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre y Apellido"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={name}
+                    onChangeText={(newValue) => setName(newValue)}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Celular"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={phone}
+                    onChangeText={(newValue) => setPhone(newValue)}
+                    keyboardType="phone-pad"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={email}
+                    onChangeText={(newValue) => setEmail(newValue)}
+                />
+                <Text style={styles.title}>Información de Envío</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Dirección"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={direction}
+                    onChangeText={(newValue) => setDirection(newValue)}
+                />
+                <Text style={styles.title}>Información de Inicio de Sesión</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Cédula"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={ci}
+                    onChangeText={(newValue) => setCi(newValue)}
+                    keyboardType="phone-pad"
+                />
+                <TextInput
+                    secureTextEntry={true}
+                    style={styles.input}
+                    placeholder="Contraseña"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={password}
+                    onChangeText={(newValue) => setPassword(newValue)}
+                />
+                <TextInput
+                    secureTextEntry={true}
+                    style={styles.input}
+                    placeholder="Confirmar contraseña"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    value={password1}
+                    onChangeText={(newValue) => setPassword1(newValue)}
+                />
+                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+                    <Text style={styles.loginText}>Iniciar sesión</Text>
+                </TouchableOpacity>
+            </ScrollView>
         </SafeAreaView >
     );
 };
@@ -114,6 +114,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
+    loginButton: {
+        alignItems: "center",
+        backgroundColor: "#DDDDDD",
+        margin: 12,
+        padding: 10
+    },
+    title: {
+        marginLeft: 12,
+        fontSize: 20,
+        fontWeight: "bold"
+    }
 });
 
 export default RegisterScreen;
