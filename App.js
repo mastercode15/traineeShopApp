@@ -1,6 +1,6 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import IndexScreen from './src/screens/indexScreen';
+import IndexScreen from './src/screens/IndexScreen';
 import RegisterPage from './src/screens/RegisterPage';
 
 const navigator = createStackNavigator(
