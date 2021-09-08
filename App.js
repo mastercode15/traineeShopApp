@@ -8,11 +8,12 @@ const navigator = createStackNavigator(
     Home: IndexScreen,
     Register: RegisterPage
 
+    
   },
   {
     initialRouteName: 'Home',
     defaultNavigationOptions: {
-      // header: false
+      //header: false
     },
   }
 );
