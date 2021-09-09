@@ -13,7 +13,7 @@ const LoginScreen = () => {
             Alert.alert("Número de cédula incorrecto");
         } else if (password < 10) {
 
-            var URL = "http://34.227.98.168:4007/clientes/login/" + $.param({ id: ci, passwd: password })
+            var URL = "http://34.227.98.168:4007/clientes/login/" + ci+"/"+ password"
             fetch(URL, {
                     method: 'GET',
                     headers: {
