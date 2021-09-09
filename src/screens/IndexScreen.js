@@ -10,13 +10,12 @@ const IndexScreen = ({ navigation }) => {
                 title="Registro"
             />
             <Button
-<<<<<<< HEAD
                 onPress={() => navigation.navigate('Monitor')}
                 title="Monitor"
-=======
+            />
+            <Button
                 onPress={() => navigation.navigate('Market')}
                 title="Market"
->>>>>>> 4e7676389b62ec8ba1eec78287aed4587038b22a
             />
         </View>
     );
