@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({navigation}) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -32,6 +32,7 @@ const RegisterScreen = () => {
                     passwordCliente: password,
                     direccionCliente: direction
                 })
+
 
             })
                 .then(response => response.json())
