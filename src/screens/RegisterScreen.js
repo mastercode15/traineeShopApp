@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 
 const RegisterScreen = () => {
     const [name, setName] = useState('');
@@ -11,26 +11,49 @@ const RegisterScreen = () => {
     const [password1, setPassword1] = useState('');
 
     const handleSubmit = () => {
-        fetch('http://34.227.98.168:4003/clientes/', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nombreCliente: name,
-                cedula: ci,
-                passwordCliente: password,
-                direccionCliente: direction
-            })
+        if (!name || !phone || !email || !direction || !ci || !password || !password1) {
+            Alert.alert("Por favor llene todos los campos para registrarse");
+        } else if (phone.length < 10) {
+            Alert.alert("Número de celular incorrecto");
+        }
+        else if (ci.length < 10) {
+            Alert.alert("Número de cédula incorrecto");
+        }
+        else if (password == password1) {
+            fetch('http://34.227.98.168:4003/clientes/', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombreCliente: name,
+                    cedula: ci,
+                    passwordCliente: password,
+                    direccionCliente: direction
+                })
 
-        }).then(response => response.json()).then(data => { console.log(data); alert(data) });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status == undefined) {
+                        Alert.alert("Creación de cuenta exitosa");
+                    } else {
+                        Alert.alert("No se pudo crear su cuenta", "Ya existe una cuenta con el número de cédula ingrasado");
+                    }
+                });
+
+        } else {
+            Alert.alert("Las contraseñas no coinciden");
+        }
     }
     return (
         <SafeAreaView style={styles.container} >
             <ScrollView>
                 <Text style={styles.title}>Información Personal</Text>
                 <TextInput
+                    maxLength={20}
                     style={styles.input}
                     placeholder="Nombre y Apellido"
                     autoCapitalize="none"
@@ -39,15 +62,21 @@ const RegisterScreen = () => {
                     onChangeText={(newValue) => setName(newValue)}
                 />
                 <TextInput
+                    maxLength={10}
                     style={styles.input}
                     placeholder="Celular"
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={phone}
-                    onChangeText={(newValue) => setPhone(newValue)}
+                    onChangeText={(newValue) => {
+                        if (/^\d+$/.test(newValue) || newValue === '') {
+                            setPhone(newValue)
+                        }
+                    }}
                     keyboardType="phone-pad"
                 />
                 <TextInput
+                    maxLength={35}
                     style={styles.input}
                     placeholder="Email"
                     autoCapitalize="none"
@@ -57,6 +86,7 @@ const RegisterScreen = () => {
                 />
                 <Text style={styles.title}>Información de Envío</Text>
                 <TextInput
+                    maxLength={100}
                     style={styles.input}
                     placeholder="Dirección"
                     autoCapitalize="none"
@@ -66,15 +96,21 @@ const RegisterScreen = () => {
                 />
                 <Text style={styles.title}>Información de Inicio de Sesión</Text>
                 <TextInput
+                    maxLength={10}
                     style={styles.input}
                     placeholder="Cédula"
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={ci}
-                    onChangeText={(newValue) => setCi(newValue)}
+                    onChangeText={(newValue) => {
+                        if (/^\d+$/.test(newValue) || newValue === '') {
+                            setCi(newValue)
+                        }
+                    }}
                     keyboardType="phone-pad"
                 />
                 <TextInput
+                    maxLength={20}
                     secureTextEntry={true}
                     style={styles.input}
                     placeholder="Contraseña"
@@ -84,6 +120,7 @@ const RegisterScreen = () => {
                     onChangeText={(newValue) => setPassword(newValue)}
                 />
                 <TextInput
+                    maxLength={20}
                     secureTextEntry={true}
                     style={styles.input}
                     placeholder="Confirmar contraseña"
