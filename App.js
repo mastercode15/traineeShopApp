@@ -6,7 +6,7 @@ import PayPage from './src/screens/PayScreen';
 const navigator = createStackNavigator(
   {
     Home: IndexScreen,
-    Payment: PayPage
+    Pagos: PayPage
 
   },
   {

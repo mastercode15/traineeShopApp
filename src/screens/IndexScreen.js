@@ -6,7 +6,7 @@ const IndexScreen = ({ navigation }) => {
         <View>
             <Text style={styles.text}>(Aquí iría el carrito de pago)</Text>
             <Button
-                onPress={() => navigation.navigate('Payment')}
+                onPress={() => navigation.navigate('Pagos')}
                 title="Pagar"
             />
         </View>
