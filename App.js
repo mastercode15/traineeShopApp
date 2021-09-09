@@ -1,15 +1,13 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import IndexScreen from './src/screens/IndexScreen';
-import RegisterPage from './src/screens/RegisterPage';
 import Market from './src/screens/MarketScreen';
-
+import RegisterScreen from './src/screens/RegisterScreen';
 const navigator = createStackNavigator(
   {
     Home: IndexScreen,
-    Register: RegisterPage,
     Market: Market,
-
+    Register: RegisterScreen
   },
   {
     initialRouteName: 'Home',
