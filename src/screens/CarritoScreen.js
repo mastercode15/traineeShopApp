@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, Image, Button, View, } from 'react-native';
 
 
-export default function Producto() {
+export default function Producto({navigation}) {
     let { cardText, card, cardImage } = styles
     const [producto, setProducto] = useState([])
     const [total, setTotal] = useState(0);
     const [sum, setSum] = useState(0);
     const [res, setRes] = useState(0);
+    const [result, setResult] = useState();
+
 
     useEffect(() => {
         fetch("https://api-producto5.herokuapp.com/")
@@ -19,41 +21,45 @@ export default function Producto() {
                 setProducto(datos)
 
             })
+
+        fetch('http://54.221.130.211:8888/venta/supermercado/1', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then((respuestaJson) => {
+                setResult(respuestaJson);
+
+            });
+        console.log(result)
     }, [])
 
-    useEffect(() => {
-        const newtotal = producto.filter((pord) => pord.total != 0)
-        newtotal.map(item => {
-            setTotal(total + parseFloat(item.precio*item.count))
-        })
-    }, [sum])
-
-    useEffect(() => {
-        const newtotal = producto.filter((pord) => pord.count != 0)
-        newtotal.map(item => {
-            setTotal(total - parseFloat(item.precio * item.count))
-        })
-    }, [res])
 
 
     const handleUpdatemore = (id) => {
         const updateTask = producto.map((item) => {
             if (item.idProducto === id && item.count < item.stock) {
+                setTotal(total + parseFloat(item.precio))
                 return {
                     ...item,
                     count: item.count + 1,
                     total: item.precio * (item.count + 1)
                 }
             }
+
             return item;
         });
         setProducto(updateTask);
-        setSum(sum + 1);
+
     }
 
     const handleUpdateless = (id) => {
         const updateTask = producto.map((item) => {
             if (item.idProducto === id && item.count > 0) {
+                setTotal(total - parseFloat(item.precio))
                 return {
                     ...item,
                     count: item.count - 1,
@@ -63,12 +69,13 @@ export default function Producto() {
             return item;
         });
         setProducto(updateTask);
-        setRes(res + 1);
+
     }
 
     const handleUpdatezero = (id) => {
         const updateTask = producto.map((item) => {
             if (item.idProducto === id) {
+                setTotal(total - parseFloat(item.precio) * item.count)
                 return {
                     ...item,
                     count: item.count * 0,
@@ -80,6 +87,13 @@ export default function Producto() {
         setProducto(updateTask);
     }
 
+
+    const handleSubmite = () => {
+        const resultado = producto.filter((prod) =>prod.total != 0)
+        navigation.navigate("Home",{resultado:resultado,total:total})
+    }
+    
+
     return (
 
         <div className="container mt-12" align="center">
@@ -87,6 +101,11 @@ export default function Producto() {
             <h2>Lista de Productos</h2>
 
             <h2>Total:{total.toFixed(2)}</h2>
+            <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={handleSubmite}
+            >Pagar</TouchableOpacity>
+
             <div className="row">
                 <div className="col-md-12">
                     {producto.map(item => (
