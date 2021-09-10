@@ -3,14 +3,7 @@ import { View, TextInput, StyleSheet, Text, Picker, Modal, TouchableOpacity, Che
 import { NavigationEvents } from 'react-navigation';
 
 //Local payments saved for testing purpouses
-const savedpays = [{type : 0, bid: 0, foot : "1234", token: "1123456789abcdef0123456789abcdef"}, 
-                  {type : 1, bid: 0, foot : "5678", token: "2123456789abcdef0123456789abcdef"}];
-
-const savedPrice = 120
-const savedMark = 0;
-const savedID = 1;
-const savedDNI = "0603420563"
-
+const savedpays = [];
 
 const modalTypes = {'OK':0,'NOUSER':1,'IERROR':2,'NOBANK':3,'NOFUNDS':4,'TERROR':5,'NOMARKET':6};
 const payType = {'banks':0,'cards':1}
@@ -18,8 +11,8 @@ const payBank = {'bank1':0,'bank2':1,'bank3':2}
 
 //const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const bAPIUH = "http://192.168.100.254:5000/users?token="
-const bAPIPH = "http://192.168.100.254:5000/pays?token="
+const bAPIUH = "http://18.118.160.143:5000/users?token="
+const bAPIPH = "http://18.118.160.143:5000/pays?token="
 
 const defaultmsg = "Ingresar mensaje aquí";
 const noFillmsg = "Llene todos los campos que faltan";
@@ -39,7 +32,7 @@ const accReg = /^\d{10}$/;
 const cardReg = /^\d{16}$/;
 
 //La aplicación en sí
-const PayPage = () => {
+const PayPage = ({navigation}) => {
     const [selectedType, setSelectedType] = useState("banks");
     const [selectedBank, setSelectedBank] = useState("bank1");
     const [modalOpen, setModalOpen] = useState(false);
@@ -52,6 +45,13 @@ const PayPage = () => {
     const [usrAcc, setUsrAcc] = useState("");
     const [modalMsg, setModalMsg] = useState(defaultmsg);
 
+    const savedPrice = navigation.state.params.total;
+    const savedMark = navigation.state.params.idSuper;
+    const savedID = navigation.state.params.login['clienteId'];
+    const savedDNI = navigation.state.params.login['cedula'];
+    const proList = navigation.state.params.resultado; //Array of dicts
+
+    //console.log(savedPrice, savedMark, savedID, savedDNI, proList);
 
     //Revisa si al ingresar un nuevo metodo de pago se han llenado los campos correctamente
     const frontCheck = () => {
@@ -144,10 +144,7 @@ const PayPage = () => {
             <TextInput editable ={!btnDis} onChangeText={(value) => setUsrAcc(value)} maxLength={16} keyboardType={'numeric'} placeholder="Ej: 1000000000 / 4500123412341234"/>
             <Text />
 
-            <View style={{flexDirection:"row", alignItems:"center"}}>
-              <CheckBox disabled ={btnDis} value={saveCheck} onValueChange={setSaveCheck}/>
-              <Text >  Guardar método de pago para futuro uso</Text>
-            </View>  
+            
 
             {savedP}         
 
@@ -155,6 +152,15 @@ const PayPage = () => {
         )
       }
     }
+
+    /*
+    
+    <View style={{flexDirection:"row", alignItems:"center"}}>
+              <CheckBox disabled ={btnDis} value={saveCheck} onValueChange={setSaveCheck}/>
+              <Text >  Guardar método de pago para futuro uso</Text>
+            </View>  
+    
+    */
 
     const rndBill = () =>{
       return Math.floor(Math.random() * 9901 + 100)
@@ -220,7 +226,8 @@ const PayPage = () => {
     const valPays = (token) => {
 
       var code;
-      var url = bAPIPH+savedMark+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice;
+      
+      var url = bAPIPH+savedMark+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice.toFixed(2);
 
       if(!putPM && savedpays.length > 0)
         url = bAPIPH+savedMark+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice.toFixed(2);
@@ -251,22 +258,20 @@ const PayPage = () => {
 
       const billNum = rndBill()
       var code;
-      var url = "http://localhost:8081/api/crear?total="+savedPrice+
-                "&fecha=2021-09-10&metodo_pago=Electrónico&cuenta_idcuenta=1"+
-                "&supermercado_idsupermercado="+savedMark+"&cliente_idcliente="+savedID+
-                "&idfactura="+billNum;
+      var url = "http://54.221.130.211:8081/api/crear?total="+savedPrice+"&fecha=2021-09-10&metodo_pago=Electrónico&cuenta_idcuenta=1"+"&supermercado_idsupermercado="+(savedMark + 1)+"&cliente_idcliente="+savedID+"&idfactura="+billNum;
 
-      fetch(url, {method: 'POST'})
-      .then((response) => {
-        code = response.status;
-        response.json().then()
-        .then( (data) => {
-          if(code == 200) valDispatch(billNum); 
-          else modalRaise(modalTypes['NOMARKET']);});
-      })
+      //console.log(url)
+
+      fetch(url, {method: 'POST', mode:'no-cors'})
+      .then((response) => 
+        code = response.status
+        ).then( (data) => {
+          //console.log(code);
+          if(code == 0) valDispatch(billNum); 
+          else modalRaise(modalTypes['NOMARKET']);})
       .catch((error) => {
         //Esto es que no se puede conectar al banco
-        //console.error('Error:', error);
+        //console.log("Error");
         modalRaise(modalTypes['NOMARKET']);
       });
       
@@ -279,20 +284,20 @@ const PayPage = () => {
       //for (i=0;i<productos.lenght;i++)
 
       var code;
-      var url = "http://localhost:8081/api/creardetalle/?cantidad="
-      +1+"&valor="+2.24+"&producto_idproducto="+1+"&factura_idfactura="+billid;
+      var url = "http://54.221.130.211:8081/api/creardetalle/?cantidad="+1+"&valor="+2.24+"&producto_idproducto="+1+"&factura_idfactura="+billid;
 
-      fetch(url, {method: 'POST'})
-      .then((response) => {
-        code = response.status;
-        response.json().then()
-        .then( (data) => {
-          if(code == 200) modalRaise(modalTypes['OK']); 
-          else modalRaise(modalTypes['NOMARKET']);});
-      })
+      //console.log(url)
+
+      fetch(url, {method: 'POST', mode:'no-cors'})
+      .then((response) => 
+        code = response.status
+        ).then( (data) => {
+          //console.log(code);
+          if(code == 0) modalRaise(modalTypes['OK']); 
+          else modalRaise(modalTypes['NOMARKET']);})
       .catch((error) => {
         //Esto es que no se puede conectar al banco
-        //console.error('Error:', error);
+        //console.log("Error");
         modalRaise(modalTypes['NOMARKET']);
       });    
 
