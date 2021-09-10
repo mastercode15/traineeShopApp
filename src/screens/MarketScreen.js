@@ -25,7 +25,7 @@ const Market = ({ navigation }) => {
                 <div className="col-md-12">
                 {market1.map(item => (                                                       
                     <TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado })}>
-                        <Image style={cardImage} source={{uri: item.idSupermercado}}/>
+                        <Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
                         <Text style={cardText}>{item.nombre_supermercado}</Text>
                     </TouchableOpacity>
                 ))}
