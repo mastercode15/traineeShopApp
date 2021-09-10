@@ -1,39 +1,23 @@
 import React, { useEffect, useState} from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, Button, View, } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, Button, View} from 'react-native';
 
-
-
-function uselistaProductos(){
-    const [producto, setProducto] = useState([])
-    useEffect(() => {
-        fetch("https://api-producto5.herokuapp.com/")
-            .then(response => response.json())
-            .then(datos =>{
-                setProducto(datos)
-            })
-    },[])
-    return producto
-}
-
-const productos = [{
-    idProducto :1,
-    nombre_producto:"p1",
-    precio: 10
-},{
-    idProducto :2,
-    nombre_producto:"p2",
-    precio: 20
-}]
-
-
-
-export default function Producto(){
+const Producto = ({ navigation }) => {
     let {cardText, card, cardImage} = styles
     const producto1 = uselistaProductos();
     const [count, setCount] = useState(0);
     const [total_pro, setTotal_pro] = useState(0);
-
-
+    function uselistaProductos(){
+        const idsuper = navigation.state.params.idSuper;
+        const [producto, setProducto] = useState([])
+        useEffect(() => {
+            fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
+                .then(response => response.json())
+                .then(datos =>{
+                    setProducto(datos)
+                })
+        },[])
+        return producto
+    }
 
     useEffect(() => {
         // Actualiza el título del documento usando la API del navegador
@@ -156,3 +140,4 @@ const styles = StyleSheet.create({
 
 });
 
+export default Producto;
