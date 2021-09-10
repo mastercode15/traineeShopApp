@@ -9,10 +9,9 @@ export default function Producto({navigation}) {
     const [sum, setSum] = useState(0);
     const [res, setRes] = useState(0);
     const [result, setResult] = useState();
-
-
+    const idsuper = navigation.state.params.idSuper;
     useEffect(() => {
-        fetch("https://api-producto5.herokuapp.com/")
+        fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
             .then(response => response.json())
             .then(datos => {
                 datos.map((item, i) => {
