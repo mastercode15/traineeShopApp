@@ -6,11 +6,13 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [login, setLogin] = useState([])
     const handleSubmit = () => {
-        if (!ci || !password) {
-            Alert.alert("Por favor llene todos los campos");
+
+        if ( !ci || !password ) {
+            alert("Por favor llene todos los campos");
+
         }
-        else if (ci.length < 10) {
-            Alert.alert("contraseña y/o usuario incorrecto");
+        else if (ci.length > 10) {
+            alert("contraseña y/o usuario incorrecto");
         }
         else if (password != 0) {
 
@@ -25,15 +27,17 @@ const LoginScreen = ({ navigation }) => {
                 .then(response => response.json())
                 .then((respuestaJson) => {
                     setLogin(respuestaJson);
-                    if (respuestaJson != null) {
-                        navigation.navigate('Market')
+
+                    if(respuestaJson != null){
+                        navigation.navigate('Market', {login: respuestaJson})
+                    }else{
+                        alert("contraseña y/o usuario incorrecto");
+
                     }
 
                 });
 
 
-        } else {
-            Alert.alert("contraseña y/o usuario incorrecto");
         }
     }
     return (
