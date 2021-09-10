@@ -9,6 +9,14 @@ const IndexScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('Register')}
                 title="Registro"
             />
+            <Button
+                onPress={() => navigation.navigate('Market')}
+                title="Market"
+            />
+            <Button
+                onPress={() => navigation.navigate('CarritoScreen')}
+                title="CarritoScreen"
+            />
         </View>
     );
 };
