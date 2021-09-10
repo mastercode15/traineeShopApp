@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { render } from 'react-dom';
-import { StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 
 function uselistaMarket(){
     const [market, setMarket] = useState([])
@@ -20,19 +20,14 @@ const Market = ({ navigation }) => {
     console.log(navigation.state.params.login)
 
     return (
-        <div className="container mt-5" align="center">
-            <h4>SuperMercados con los que trabajamos</h4>
-            <div className="row">
-                <div className="col-md-12">
-                {market1.map(item => (                                                       
-                    <TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}>
-                        <Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
-                        <Text style={cardText}>{item.nombre_supermercado}</Text>
-                    </TouchableOpacity>
-                ))}
-                </div>
-            </div>
-        </div>
+        <ScrollView>
+            {market1.map(item => (                                                       
+            <TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}>
+                <Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
+                <Text style={cardText}>{item.nombre_supermercado}</Text>
+            </TouchableOpacity>
+            ))}
+        </ScrollView>
     )
 }
 

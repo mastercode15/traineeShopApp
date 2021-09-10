@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, Button, View, } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Image, Button, View, ScrollView} from 'react-native';
 
 
 export default function Producto({navigation}) {
@@ -92,60 +92,46 @@ export default function Producto({navigation}) {
 
     const handleSubmite = () => {
         const resultado = producto.filter((prod) =>prod.total != 0)
-        navigation.navigate("Home",{resultado:resultado,total:total})
+        navigation.navigate("Pagos",{resultado:resultado,total:total, idSuper: navigation.state.params.idSuper , login: navigation.state.params.login})
     }
     
 
     return (
-
-        <div className="container mt-12" align="center">
-
-            <h2>Lista de Productos</h2>
-
-            <h2>Total:{total.toFixed(2)}</h2>
+        <ScrollView>
+            <Text>Total:{total.toFixed(2)}</Text>
             <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={handleSubmite}
-            >Pagar</TouchableOpacity>
-
-            <div className="row">
-                <div className="col-md-12">
-                    {producto.map(item => (
-                        <View style={styles.espacio}>
-                            <View style={styles.fixToText}>
-                                <Image style={cardImage} source={{ uri: item.imagen_producto }} />
-                                <View>
-                                    <Text style={cardText}>{item.nombre_producto}</Text>
-                                    <Text style={cardText}>${item.precio}</Text>
-                                    <Text style={cardText}><h3>Cantidad: {item.count}</h3></Text>
-                                    <Text style={cardText}><h3>Total: ${item.total.toFixed(2)}</h3></Text>
-                                </View>
-                            </View>
-                            <View style={styles.fixToText}>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => handleUpdatezero(item.idProducto)}
-                                >Vaciar</TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => handleUpdatemore(item.idProducto)}
-                                >+</TouchableOpacity>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => handleUpdateless(item.idProducto)}
-                                >-</TouchableOpacity>
-                            </View>
-                        </View>
-
-
-                    ))}
-
-
-                </div>
-
-            </div>
-        </div>
-
+                style={styles.button}
+                onPress={handleSubmite}
+            ><Text>Pagar</Text></TouchableOpacity>
+            {producto.map(item => (
+            <View style={styles.espacio}>
+                <View style={styles.fixToText}>
+                    <Image style={cardImage} source={{ uri: item.imagen_producto }} />
+                    <View>
+                        <Text style={cardText}>{item.nombre_producto}</Text>
+                        <Text style={cardText}>${item.precio}</Text>
+                        <Text style={cardText}>Cantidad: {item.count}</Text>
+                        <Text style={cardText}>Total: ${item.total.toFixed(2)}</Text>
+                    </View>
+                </View>
+                <View style={styles.fixToText}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => handleUpdatezero(item.idProducto)}
+                    ><Text>Vaciar</Text></TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => handleUpdatemore(item.idProducto)}
+                    ><Text>+</Text></TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => handleUpdateless(item.idProducto)}
+                    ><Text>-</Text></TouchableOpacity>
+                </View>
+            </View>
+        ))}
+        </ScrollView>
+        
     )
 }
 
