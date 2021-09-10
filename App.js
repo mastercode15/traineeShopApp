@@ -11,7 +11,6 @@ const navigator = createStackNavigator(
     Market: Market,
     Register: RegisterScreen,
     CarritoScreen: Producto,
-
   },
   {
     initialRouteName: 'Home',
