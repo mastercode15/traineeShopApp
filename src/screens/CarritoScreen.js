@@ -10,6 +10,7 @@ export default function Producto({navigation}) {
     const [res, setRes] = useState(0);
     const [result, setResult] = useState();
     const idsuper = navigation.state.params.idSuper;
+
     useEffect(() => {
         fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
             .then(response => response.json())
@@ -115,7 +116,7 @@ export default function Producto({navigation}) {
                                     <Text style={cardText}>{item.nombre_producto}</Text>
                                     <Text style={cardText}>${item.precio}</Text>
                                     <Text style={cardText}><h3>Cantidad: {item.count}</h3></Text>
-                                    <Text style={cardText}><h3>Total: ${item.total}</h3></Text>
+                                    <Text style={cardText}><h3>Total: ${item.total.toFixed(2)}</h3></Text>
                                 </View>
                             </View>
                             <View style={styles.fixToText}>
