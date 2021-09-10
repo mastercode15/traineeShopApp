@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet, View, Button, TouchableOpacity } from 'react-native';
 
-const IndexScreen = ({ navigation }) => {
+const IndexScreen = ({ navigator}) => {
     return (
         <View>
             <Text style={styles.text}>Hi there!</Text>

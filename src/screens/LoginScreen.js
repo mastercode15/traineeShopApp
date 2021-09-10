@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { SafeAreaView, Text, Image, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 
 const LoginScreen = ({navigation}) => {
     const [ci, setCi] = useState('');
@@ -41,7 +41,10 @@ const LoginScreen = ({navigation}) => {
         <SafeAreaView style={styles.container} >
             <ScrollView>
 
-                <Text style={styles.title}>Login</Text>
+            <Image
+        style={styles.tinyLogo}
+        source={require('./image/logo.png')}
+      />
 
 
                 <TextInput
@@ -96,6 +99,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
     },
+    tinyLogo: {
+        alignSelf: "center",
+        width: 300,
+        height: 200,
+      },
     loginButton: {
         alignItems: "center",
         backgroundColor: "#DDDDDD",
