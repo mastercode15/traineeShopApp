@@ -13,6 +13,10 @@ const IndexScreen = ({ navigation }) => {
                 onPress={() => navigation.navigate('Login')}
                 title="Login"
             />
+                <Button
+                onPress={() => navigation.navigate('Market')}
+                title="Market"
+            />
         </View>
     );
 };
