@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ const RegisterScreen = ({navigation}) => {
             Alert.alert("Número de cédula incorrecto");
         }
         else if (password == password1) {
-            fetch('http://34.227.98.168:4003/clientes/', {
+            fetch('http://54.221.130.211:4003/clientes/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -30,7 +30,9 @@ const RegisterScreen = ({navigation}) => {
                     nombreCliente: name,
                     cedula: ci,
                     passwordCliente: password,
-                    direccionCliente: direction
+                    direccionCliente: direction,
+                    emailCliente: email,
+                    celularCliente: phone
                 })
 
 
@@ -40,6 +42,7 @@ const RegisterScreen = ({navigation}) => {
                     console.log(data);
                     if (data.status == undefined) {
                         Alert.alert("Creación de cuenta exitosa");
+                        navigation.goBack();
                     } else {
                         Alert.alert("No se pudo crear su cuenta", "Ya existe una cuenta con el número de cédula ingrasado");
                     }
@@ -131,7 +134,7 @@ const RegisterScreen = ({navigation}) => {
                     onChangeText={(newValue) => setPassword1(newValue)}
                 />
                 <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text style={styles.loginText}>Iniciar sesión</Text>
+                    <Text>Registrase</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView >
@@ -154,7 +157,7 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         alignItems: "center",
-        backgroundColor: "#DDDDDD",
+        backgroundColor: "#FF6D4D",
         margin: 12,
         padding: 10
     },
