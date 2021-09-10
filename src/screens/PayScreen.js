@@ -3,13 +3,33 @@ import { View, TextInput, StyleSheet, Text, Picker, Modal, TouchableOpacity, Che
 import { NavigationEvents } from 'react-navigation';
 
 //Local payments saved for testing purpouses
-const savedpays = [{type : 0, bid: 0, foot : "1234"},
-                  {type : 1, bid: 0, foot : "5678"}];
+const savedpays = [{type : 0, bid: 0, foot : "1234", token: "1123456789abcdef0123456789abcdef"}, 
+                  {type : 1, bid: 0, foot : "5678", token: "2123456789abcdef0123456789abcdef"}];
+const savedMark = 0;
+const savedPrice = "120.00"
+const savedID = "0603420563"
+
+const modalTypes = {'OK':0,'NOUSER':1,'IERROR':2,'NOBANK':3,'NOFUNDS':4,'TERROR':5};
+const payType = {'banks':0,'cards':1}
+const payBank = {'bank1':0,'bank2':1,'bank3':2}
+
+//const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const bAPIUH = "http://192.168.100.250:5000/users?token="
+const bAPIPH = "http://192.168.100.250:5000/pays?token="
 
 const defaultmsg = "Ingresar mensaje aquí";
 const noFillmsg = "Llene todos los campos que faltan";
 const badAcc = "Cuenta de contener 10 dígitos";
 const badCard = "Tarjeta de contener 16 dígitos";
+
+const succMsg = "Transacción exitosa";
+
+const noUser = "Usuario o cuenta/tarjeta no existen";
+const intError = "Error interno del sistema"
+const noBank = "Error al contactar al banco"
+const noFunds = "No tiene fondos suficientes para esta compra"
+const tranError = "El método de pago ha sido rechazado"
 
 const accReg = /^\d{10}$/;
 const cardReg = /^\d{16}$/;
@@ -32,15 +52,21 @@ const PayPage = () => {
     const frontCheck = () => {
       if (usrAddr.trim() == "" || usrAcc.trim() == ""){
         setModalMsg(noFillmsg);
+        return false;
       }
-      else if (selectedType === "banks" && !accReg.test(usrAcc.trim())){
+      
+      if (selectedType === "banks" && !accReg.test(usrAcc.trim())){
         setModalMsg(badAcc);
+        return false;
       }
-      else if (selectedType === "cards" && !cardReg.test(usrAcc.trim())){
+      
+      if (selectedType === "cards" && !cardReg.test(usrAcc.trim())){
         setModalMsg(badCard);
+        return false;
       }
-      setBtnDis(true);
-      setModalOpen(true);
+      
+      return true;
+
     }
 
     //Funcion para mostar metodos de pago guardados, si esque existen
@@ -61,7 +87,7 @@ const PayPage = () => {
         return (
           <View>
             <Text style={styles.labeltxt_style}>Métodos de pago guardados</Text>
-              <Picker selectedValue = {selPay} onValueChange={(itemValue, itemIndex) => setSelPay(itemValue)}>
+              <Picker enabled ={!btnDis} selectedValue = {selPay} onValueChange={(itemValue, itemIndex) => setSelPay(itemValue)}>
                 {list}
               </Picker>
 
@@ -79,7 +105,7 @@ const PayPage = () => {
       const savedP = []
 
       if(savedpays.length > 0){
-        //savedP.push(<br />)
+        //savedP.push(<Text />)
         savedP.push(
           //<Button onPress={() => {setPutPM(false);}} title="Usar métodos de pago guardados"/>
           <TouchableOpacity style={!btnDis ? styles.spaybtn_style : styles.spaybtn_dis_style} disabled = {btnDis} onPress={() => {setPutPM(false);}} >
@@ -88,33 +114,33 @@ const PayPage = () => {
         );
       }
       else{
-        savedP.push(<br />)
+        savedP.push(<Text />)
       }
 
       if (putPM){
         return(
           <View>
             <Text style={styles.labeltxt_style}>Tipo de pago:</Text>
-            <Picker selectedValue = {selectedType} onValueChange={(itemValue, itemIndex) => setSelectedType(itemValue)}>
+            <Picker enabled ={!btnDis} selectedValue = {selectedType} onValueChange={(itemValue, itemIndex) => setSelectedType(itemValue)}>
                 <Picker.Item label="Transferencia Bancaria" value="banks" key="banks"/>
                 <Picker.Item label="Tarjeta Débito/Crédito" value="cards" key="cards"/>
             </Picker>
-            <br/>
+            <Text />
 
             <Text style={styles.labeltxt_style}>Seleccione Banco/Proveedor:</Text>
-            <Picker selectedValue = {selectedBank} onValueChange={(itemValue, itemIndex) => setSelectedBank(itemValue)}>
+            <Picker enabled ={!btnDis} selectedValue = {selectedBank} onValueChange={(itemValue, itemIndex) => setSelectedBank(itemValue)}>
               <Picker.Item label="Banco A" value="bank1" key="bank1"/>
               <Picker.Item label="Banco B" value="bank2" key="bank2"/>
               <Picker.Item label="Banco C" value="bank3" key="bank3"/>
             </Picker>
-            <br/>
+            <Text />
 
             <Text style={styles.labeltxt_style}>Ingrese su cuenta o tarjeta:</Text>
-            <TextInput onChangeText={(value) => setUsrAcc(value)} maxLength={16} keyboardType={'numeric'} placeholder="Ej: 1000000000 / 4500123412341234"/>
-            <br />
+            <TextInput editable ={!btnDis} onChangeText={(value) => setUsrAcc(value)} maxLength={16} keyboardType={'numeric'} placeholder="Ej: 1000000000 / 4500123412341234"/>
+            <Text />
 
             <View style={{flexDirection:"row", alignItems:"center"}}>
-              <CheckBox value={saveCheck} onValueChange={setSaveCheck}/>
+              <CheckBox disabled ={btnDis} value={saveCheck} onValueChange={setSaveCheck}/>
               <Text >  Guardar método de pago para futuro uso</Text>
             </View>  
 
@@ -123,6 +149,91 @@ const PayPage = () => {
           </View>
         )
       }
+    }
+
+    const modalRaise = (code) => {
+      
+      if(code == 0)
+        setModalMsg(succMsg);
+      else if (code == 1)
+        setModalMsg(noUser);
+      else if (code == 2)
+        setModalMsg(intError);
+      else if (code == 3)
+        setModalMsg(noBank)
+      else if (code == 4)
+        setModalMsg(noFunds)
+      else if (code == 5)
+        setModalMsg(tranError)
+
+      setModalOpen(true);
+    }
+
+    const valStart = () =>{
+      setBtnDis(true);
+      if (!frontCheck()){
+        setModalOpen(true);
+        return;
+      }
+      else{
+        
+        if (putPM)
+          valUsers();
+        else
+          valPays("");
+      }
+    }
+
+    const valUsers = () => {
+
+      var code;
+
+      fetch(bAPIUH+"0"+payType[selectedType]+payBank[selectedBank]+"-"+savedID+"-"+usrAcc, {method: 'GET'})
+      .then((response) => {
+        code = response.status;
+        response.json().then()
+        .then( (data) => {
+          if(code == 200) valPays(data.token); 
+          else if (code == 404) modalRaise(modalTypes['NOUSER']);
+          else if (code == 400) modalRaise(modalTypes['IERROR'])
+          else modalRaise(modalTypes['NOBANK']);});
+      })
+      .catch((error) => {
+        //Esto es que no se puede conectar al banco
+        //console.error('Error:', error);
+        modalRaise(modalTypes['NOBANK']);
+      });
+
+    }
+
+    const valPays = (token) => {
+
+      var code;
+      var url = bAPIPH+savedMark+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice;
+
+      if(!putPM && savedpays.length > 0)
+        url = bAPIPH+savedMark+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice;
+
+      fetch(url, {method: 'POST'})
+      .then((response) => {
+        code = response.status;
+        response.json().then()
+        .then( (data) => {
+          if(code == 200) modalRaise(modalTypes['OK']); 
+          else if (code == 404) {
+            if (data.code == 1) modalRaise(modalTypes['NOFUNDS']);
+            else if (data.code == 2) modalRaise(modalTypes['NOUSER']);
+            else modalRaise(modalTypes['TERROR']);
+          }
+          else if (code == 400) modalRaise(modalTypes['IERROR']);
+          else modalRaise(modalTypes['NOBANK']);});
+      })
+      .catch((error) => {
+        //Esto es que no se puede conectar al banco
+        //console.error('Error:', error);
+        modalRaise(modalTypes['NOBANK']);
+      });
+
     }
 
 
@@ -144,14 +255,14 @@ const PayPage = () => {
 
             <Text style={styles.labeltxt_style}>Nombre del cliente:</Text>
             <TextInput value = "Danu Jhonson" editable = {false} />
-            <br />
+            <Text />
             <Text style={styles.labeltxt_style}>Dirección:</Text>
-            <TextInput onChangeText={(value) => setUsrAddr(value)} maxLength={100} placeholder="Escriba aquí la dirección para la factura"/>
-            <br />
+            <TextInput editable = {!btnDis} onChangeText={(value) => setUsrAddr(value)} maxLength={100} placeholder="Escriba aquí la dirección para la factura"/>
+            <Text />
 
             <Text style={styles.labeltxt_style}>Valor a pagar:</Text>
-            <TextInput value = "$150.00" editable = {false} />
-            <br />
+            <TextInput value = {"$" + savedPrice} editable = {false} />
+            <Text />
 
             {savedPM()}
 
@@ -159,7 +270,7 @@ const PayPage = () => {
             {newPM()}
 
 
-            <TouchableOpacity style={!btnDis ? styles.paybtn_style : styles.paybtn_dis_style} disabled = {btnDis} onPress={() => {frontCheck();}} >
+            <TouchableOpacity style={!btnDis ? styles.paybtn_style : styles.paybtn_dis_style} disabled = {btnDis} onPress={() => {valStart();}} >
                 <Text style= {styles.paytxt_style}>Realizar el pago</Text>
             </TouchableOpacity>
 
