@@ -17,6 +17,7 @@ function uselistaMarket(){
 const Market = ({ navigation }) => {
     let {cardText, card, cardImage} = styles
     const market1 = uselistaMarket()
+    console.log(navigation.state.params.login)
 
     return (
         <div className="container mt-5" align="center">
