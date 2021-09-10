@@ -5,18 +5,21 @@ import { NavigationEvents } from 'react-navigation';
 //Local payments saved for testing purpouses
 const savedpays = [{type : 0, bid: 0, foot : "1234", token: "1123456789abcdef0123456789abcdef"}, 
                   {type : 1, bid: 0, foot : "5678", token: "2123456789abcdef0123456789abcdef"}];
-const savedMark = 0;
-const savedPrice = "120.00"
-const savedID = "0603420563"
 
-const modalTypes = {'OK':0,'NOUSER':1,'IERROR':2,'NOBANK':3,'NOFUNDS':4,'TERROR':5};
+const savedPrice = 120
+const savedMark = 0;
+const savedID = 1;
+const savedDNI = "0603420563"
+
+
+const modalTypes = {'OK':0,'NOUSER':1,'IERROR':2,'NOBANK':3,'NOFUNDS':4,'TERROR':5,'NOMARKET':6};
 const payType = {'banks':0,'cards':1}
 const payBank = {'bank1':0,'bank2':1,'bank3':2}
 
 //const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const bAPIUH = "http://192.168.100.250:5000/users?token="
-const bAPIPH = "http://192.168.100.250:5000/pays?token="
+const bAPIUH = "http://192.168.100.254:5000/users?token="
+const bAPIPH = "http://192.168.100.254:5000/pays?token="
 
 const defaultmsg = "Ingresar mensaje aquí";
 const noFillmsg = "Llene todos los campos que faltan";
@@ -30,6 +33,7 @@ const intError = "Error interno del sistema"
 const noBank = "Error al contactar al banco"
 const noFunds = "No tiene fondos suficientes para esta compra"
 const tranError = "El método de pago ha sido rechazado"
+const noMarket = "El mercado no se encuentra disponible"
 
 const accReg = /^\d{10}$/;
 const cardReg = /^\d{16}$/;
@@ -47,6 +51,7 @@ const PayPage = () => {
     const [usrAddr, setUsrAddr] = useState("");
     const [usrAcc, setUsrAcc] = useState("");
     const [modalMsg, setModalMsg] = useState(defaultmsg);
+
 
     //Revisa si al ingresar un nuevo metodo de pago se han llenado los campos correctamente
     const frontCheck = () => {
@@ -151,6 +156,10 @@ const PayPage = () => {
       }
     }
 
+    const rndBill = () =>{
+      return Math.floor(Math.random() * 9901 + 100)
+    }
+
     const modalRaise = (code) => {
       
       if(code == 0)
@@ -165,6 +174,8 @@ const PayPage = () => {
         setModalMsg(noFunds)
       else if (code == 5)
         setModalMsg(tranError)
+      else if (code == 6)
+        setModalMsg(noMarket)
 
       setModalOpen(true);
     }
@@ -188,7 +199,7 @@ const PayPage = () => {
 
       var code;
 
-      fetch(bAPIUH+"0"+payType[selectedType]+payBank[selectedBank]+"-"+savedID+"-"+usrAcc, {method: 'GET'})
+      fetch(bAPIUH+"0"+payType[selectedType]+payBank[selectedBank]+"-"+savedDNI+"-"+usrAcc, {method: 'GET'})
       .then((response) => {
         code = response.status;
         response.json().then()
@@ -212,14 +223,14 @@ const PayPage = () => {
       var url = bAPIPH+savedMark+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice;
 
       if(!putPM && savedpays.length > 0)
-        url = bAPIPH+savedMark+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice;
+        url = bAPIPH+savedMark+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice.toFixed(2);
 
       fetch(url, {method: 'POST'})
       .then((response) => {
         code = response.status;
         response.json().then()
         .then( (data) => {
-          if(code == 200) modalRaise(modalTypes['OK']); 
+          if(code == 200) valBill(token); 
           else if (code == 404) {
             if (data.code == 1) modalRaise(modalTypes['NOFUNDS']);
             else if (data.code == 2) modalRaise(modalTypes['NOUSER']);
@@ -233,6 +244,57 @@ const PayPage = () => {
         //console.error('Error:', error);
         modalRaise(modalTypes['NOBANK']);
       });
+
+    }
+
+    const valBill = (token) => {
+
+      const billNum = rndBill()
+      var code;
+      var url = "http://localhost:8081/api/crear?total="+savedPrice+
+                "&fecha=2021-09-10&metodo_pago=Electrónico&cuenta_idcuenta=1"+
+                "&supermercado_idsupermercado="+savedMark+"&cliente_idcliente="+savedID+
+                "&idfactura="+billNum;
+
+      fetch(url, {method: 'POST'})
+      .then((response) => {
+        code = response.status;
+        response.json().then()
+        .then( (data) => {
+          if(code == 200) valDispatch(billNum); 
+          else modalRaise(modalTypes['NOMARKET']);});
+      })
+      .catch((error) => {
+        //Esto es que no se puede conectar al banco
+        //console.error('Error:', error);
+        modalRaise(modalTypes['NOMARKET']);
+      });
+      
+
+
+    }
+
+    const valDispatch = (billid) => {
+
+      //for (i=0;i<productos.lenght;i++)
+
+      var code;
+      var url = "http://localhost:8081/api/creardetalle/?cantidad="
+      +1+"&valor="+2.24+"&producto_idproducto="+1+"&factura_idfactura="+billid;
+
+      fetch(url, {method: 'POST'})
+      .then((response) => {
+        code = response.status;
+        response.json().then()
+        .then( (data) => {
+          if(code == 200) modalRaise(modalTypes['OK']); 
+          else modalRaise(modalTypes['NOMARKET']);});
+      })
+      .catch((error) => {
+        //Esto es que no se puede conectar al banco
+        //console.error('Error:', error);
+        modalRaise(modalTypes['NOMARKET']);
+      });    
 
     }
 
