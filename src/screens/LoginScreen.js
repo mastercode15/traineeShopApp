@@ -13,7 +13,7 @@ const LoginScreen = () => {
             Alert.alert("Número de cédula incorrecto");
         } else if (password < 10) {
 
-            var URL = "http://34.227.98.168:4007/clientes/login/" + ci+"/"+ password"
+            var URL = "http://34.227.98.168:4007/clientes/login/" + $.param({ id: ci, passwd: password })
             fetch(URL, {
                     method: 'GET',
                     headers: {
@@ -54,7 +54,8 @@ const LoginScreen = () => {
         autoCorrect = { false }
         value = { ci }
         onChangeText = {
-            (newValue) => setCi(newValue) }
+            (newValue) => setCi(newValue)
+        }
         />
 
 
@@ -67,7 +68,8 @@ const LoginScreen = () => {
         autoCorrect = { false }
         value = { password }
         onChangeText = {
-            (newValue) => setPassword(newValue) }
+            (newValue) => setPassword(newValue)
+        }
         />
 
         <
@@ -77,7 +79,7 @@ const LoginScreen = () => {
         Text style = { styles.loginText } > Iniciar sesión < /Text> <
         /TouchableOpacity> <
         /ScrollView> <
-        /SafeAreaView >
+        /SafeAreaView>
     );
 };
 
