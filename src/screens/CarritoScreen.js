@@ -10,6 +10,8 @@ export default function Producto({navigation}) {
     const [res, setRes] = useState(0);
     const [result, setResult] = useState();
     const idsuper = navigation.state.params.idSuper;
+    const login = navigation.state.params.login;
+    console.log(navigation.state.params.login)
 
     useEffect(() => {
         fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
