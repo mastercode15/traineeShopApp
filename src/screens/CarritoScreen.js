@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, Text} from 'react-native';
-import { Card, Button, Icon, ButtonGroup } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Card, Button, ButtonGroup,PricingCard, Badge,Chip,LinearProgress } from 'react-native-elements';
 
 export default function Producto({navigation}) {
     let { cardText, card, cardImage } = styles
@@ -11,6 +12,8 @@ export default function Producto({navigation}) {
     const [result, setResult] = useState();
     const idsuper = navigation.state.params.idSuper;
     const login = navigation.state.params.login;
+    const nombre_cli = navigation.state.params.login['nombreCliente'];
+    const nombre_super = navigation.state.params.idSuper['nombreCliente'];
     console.log(idsuper)
     console.log(login)
 
@@ -99,43 +102,62 @@ export default function Producto({navigation}) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     return (
         <ScrollView>
+            
             {producto.map(item => (
             <Card key={item.idProducto}>
             <Card.Title>{item.nombre_producto}</Card.Title>
             <Card.Divider/>
+            <View style={styles.clip1}>
+            <Text>Total: $ {item.total.toFixed(2)}</Text>
+            </View>
+            <View>
             <Card.Image source={{uri: item.imagen_producto}}></Card.Image>
+            </View>
             <Card.Divider/>
-            <Text style={{marginBottom: 10}}>
-                ${item.precio}         Cantidad: {item.count}         Total: ${item.total.toFixed(2)}
-            </Text>
+            <View style={styles.clip2}>
+            <Text>Precio U: $ {item.precio}</Text>
+            
+            
+            </View>
+            <View style={styles.clip2}>
+            <Text>Cantidad: {item.count}</Text>
+            </View>
+            
+            <Card.Divider/>
+            
+            <View style={styles.fixToText}>
+            <Card.Divider/>
             <Button
-                icon={<Icon name='delete' color='#ffffff' />}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                icon={<Icon name='trash' color='#ffffff' />}
+                title=" Vaciar"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
                 onPress={() => handleUpdatezero(item.idProducto)}/>
             <Button
-                icon={<Icon name='add' color='#ffffff' />}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                icon={<Icon name='cart-plus' color='#ffffff' />}
+                title=" Añadir"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
                 onPress={() => handleUpdatemore(item.idProducto)}/>
             <Button
-                icon={<Icon name='remove' color='#ffffff' />}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                icon={<Icon name='minus-circle' color='#ffffff' />}
+                title=" Quitar"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
                 onPress={() => handleUpdateless(item.idProducto)}
                 />
+                </View>
           </Card>
         ))}
-        <Button
-                icon={<Icon name='money' color='#ffffff' />}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
-                title=" PAGAR"
-                onPress={handleSubmite}/>
+
+            <PricingCard
+            color="#4f9deb"
+            title="Total"
+            price={"$ "+ total.toFixed(2)}
+            info={['Cliente: '+nombre_cli]}
+            button={{ title: ' Comprar', icon: 'shopping-cart', onPress: handleSubmite }}
+            />
+        
         </ScrollView>
         
     )
-}
-
-function comprar(id, nombre, precio) {
-    alert('id: ' + id + " nombre: " + nombre + " precio: " + precio);
-    //onPressIn={() =>comprar(item.idProducto,item.nombre_producto,item.precio)}
 }
 
 const styles = StyleSheet.create({
@@ -162,8 +184,7 @@ const styles = StyleSheet.create({
     },
     fixToText: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginBottom: 15,
+        
     },
     espacio: {
         marginBottom: 15,
@@ -174,6 +195,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#FF6D4D",
         borderRadius: 20,
         padding: 5
+    },
+    clip1: {
+        alignItems: "center",
+        marginBottom: 15,
+        shadowColor: '#F337C2',
+        
+        
+    },
+    clip2: {
+        
+        marginBottom: 15,
+        
     },
     buttonPress: {
         borderColor: "#000066",
