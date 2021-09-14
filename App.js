@@ -20,7 +20,7 @@ const navigator = createStackNavigator(
   },
 
   {
-    initialRouteName: 'Register',
+    initialRouteName: 'Login',
     defaultNavigationOptions: {
       //header: false
     },
