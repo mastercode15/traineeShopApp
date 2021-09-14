@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
-import { render } from 'react-dom';
-import { StyleSheet, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import { StyleSheet, Text, ScrollView} from 'react-native';
+import { Card, Button, Icon } from 'react-native-elements'
 
 function uselistaMarket(){
     const [market, setMarket] = useState([])
@@ -21,11 +21,17 @@ const Market = ({ navigation }) => {
 
     return (
         <ScrollView>
-            {market1.map(item => (                                                       
-            <TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}>
-                <Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
-                <Text style={cardText}>{item.nombre_supermercado}</Text>
-            </TouchableOpacity>
+          {market1.map(item => (  
+          <Card>
+            <Card.Title>{item.nombre_supermercado}</Card.Title>
+            <Card.Divider/>
+            <Card.Image source={{uri: item.imagen_supermercado}}></Card.Image>
+            <Button
+                icon={<Icon name='star' color='#ffffff' />}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                title={item.nombre_supermercado}
+                onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}/>
+          </Card>
             ))}
         </ScrollView>
     )
@@ -59,3 +65,8 @@ const styles = StyleSheet.create({
   });
 
   export default Market;
+
+/*<TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}>
+<Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
+<Text style={cardText}>{item.nombre_supermercado}</Text>
+</TouchableOpacity> */
