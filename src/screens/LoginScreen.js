@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, Image, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { SafeAreaView, Text, Image,  TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { Button, Input} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
     const [ci, setCi] = useState('');
@@ -8,11 +10,11 @@ const LoginScreen = ({ navigation }) => {
     const handleSubmit = () => {
 
         if ( !ci || !password ) {
-            alert("Por favor llene todos los campos");
+            Alert.alert("Por favor llene todos los campos");
 
         }
         else if (ci.length > 10) {
-            alert("contraseña y/o usuario incorrecto");
+            Alert.alert("contraseña y/o usuario incorrecto");
         }
         else if (password != 0) {
 
@@ -55,9 +57,9 @@ const LoginScreen = ({ navigation }) => {
                 />
 
 
-                <TextInput
+                <Input
                     maxLength={10}
-                    style={styles.input}
+                    style={styles}
                     placeholder="Cédula"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -68,20 +70,34 @@ const LoginScreen = ({ navigation }) => {
                         }
                     }}
                     keyboardType="phone-pad"
+                    leftIcon={
+                        <Icon
+                          name='user'
+                          size={24}
+                          color='black'
+                        />
+                      }
                 />
-                <TextInput
+                <Input
                     maxLength={20}
                     secureTextEntry={true}
-                    style={styles.input}
+                    style={styles}
                     placeholder="Contraseña"
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={password}
                     onChangeText={(newValue) => setPassword(newValue)}
+                    leftIcon={
+                        <Icon
+                          name='lock'
+                          size={24}
+                          color='black'
+                        />
+                      }
                 />
 
                 <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text style={styles.loginText}>Iniciar sesión</Text>
+                    <Text>Iniciar sesión</Text>
                 </TouchableOpacity>
                 <Button
                     onPress={() => navigation.navigate('Register')}
@@ -116,7 +132,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#DDDDDD",
         margin: 12,
-        padding: 10
+        padding: 10,
+
     },
     title: {
         marginLeft: 12,
