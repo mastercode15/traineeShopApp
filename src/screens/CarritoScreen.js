@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, Button, View, ScrollView} from 'react-native';
-
+import { StyleSheet, ScrollView, View, Text} from 'react-native';
+import { Card, Button, Icon, ButtonGroup } from 'react-native-elements';
 
 export default function Producto({navigation}) {
     let { cardText, card, cardImage } = styles
@@ -11,7 +11,8 @@ export default function Producto({navigation}) {
     const [result, setResult] = useState();
     const idsuper = navigation.state.params.idSuper;
     const login = navigation.state.params.login;
-    console.log(navigation.state.params.login)
+    console.log(idsuper)
+    console.log(login)
 
     useEffect(() => {
         fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
@@ -95,41 +96,38 @@ export default function Producto({navigation}) {
         navigation.navigate("Pagos",{resultado:resultado,total:total, idSuper: navigation.state.params.idSuper , login: navigation.state.params.login})
     }
     
-
+    const [selectedIndex, setSelectedIndex] = useState(0);
     return (
         <ScrollView>
-            <Text>Total:{total.toFixed(2)}</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmite}
-            ><Text>Pagar</Text></TouchableOpacity>
             {producto.map(item => (
-            <View style={styles.espacio}>
-                <View style={styles.fixToText}>
-                    <Image style={cardImage} source={{ uri: item.imagen_producto }} />
-                    <View>
-                        <Text style={cardText}>{item.nombre_producto}</Text>
-                        <Text style={cardText}>${item.precio}</Text>
-                        <Text style={cardText}>Cantidad: {item.count}</Text>
-                        <Text style={cardText}>Total: ${item.total.toFixed(2)}</Text>
-                    </View>
-                </View>
-                <View style={styles.fixToText}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdatezero(item.idProducto)}
-                    ><Text>Vaciar</Text></TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdatemore(item.idProducto)}
-                    ><Text>+</Text></TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdateless(item.idProducto)}
-                    ><Text>-</Text></TouchableOpacity>
-                </View>
-            </View>
+            <Card key={item.idProducto}>
+            <Card.Title>{item.nombre_producto}</Card.Title>
+            <Card.Divider/>
+            <Card.Image source={{uri: item.imagen_producto}}></Card.Image>
+            <Card.Divider/>
+            <Text style={{marginBottom: 10}}>
+                ${item.precio}         Cantidad: {item.count}         Total: ${item.total.toFixed(2)}
+            </Text>
+            <Button
+                icon={<Icon name='delete' color='#ffffff' />}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                onPress={() => handleUpdatezero(item.idProducto)}/>
+            <Button
+                icon={<Icon name='add' color='#ffffff' />}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                onPress={() => handleUpdatemore(item.idProducto)}/>
+            <Button
+                icon={<Icon name='remove' color='#ffffff' />}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                onPress={() => handleUpdateless(item.idProducto)}
+                />
+          </Card>
         ))}
+        <Button
+                icon={<Icon name='money' color='#ffffff' />}
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                title=" PAGAR"
+                onPress={handleSubmite}/>
         </ScrollView>
         
     )

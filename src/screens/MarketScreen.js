@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { StyleSheet, Text, ScrollView} from 'react-native';
-import { Card, Button, Icon } from 'react-native-elements'
+import { Card, Button, Icon } from 'react-native-elements';
 
 function uselistaMarket(){
     const [market, setMarket] = useState([])
@@ -22,7 +22,7 @@ const Market = ({ navigation }) => {
     return (
         <ScrollView>
           {market1.map(item => (  
-          <Card>
+          <Card key={item.idSupermercado}>
             <Card.Title>{item.nombre_supermercado}</Card.Title>
             <Card.Divider/>
             <Card.Image source={{uri: item.imagen_supermercado}}></Card.Image>
