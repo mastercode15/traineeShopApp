@@ -20,11 +20,11 @@ const navigator = createStackNavigator(
   },
 
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Register',
     defaultNavigationOptions: {
       //header: false
     },
-});
+  });
 
 
 export default createAppContainer(navigator);
