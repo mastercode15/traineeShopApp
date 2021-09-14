@@ -25,17 +25,20 @@ const LoginScreen = ({ navigation }) => {
 
             })
                 .then(response => response.json())
+
                 .then((respuestaJson) => {
-                    setLogin(respuestaJson);
-
-                    if(respuestaJson != null){
+                    console.log(respuestaJson);
+                    if(respuestaJson.status == undefined){
                         navigation.navigate('Market', {login: respuestaJson})
-                    }else{
-                        alert("contraseña y/o usuario incorrecto");
 
-                    }
+                    }else{
+
+                     alert("contraseña y/o usuario incorrecto");
+                }
+
 
                 });
+
 
 
         }
