@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { SafeAreaView, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+
+import { Input, Text, Button } from 'react-native-elements';
 
 const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -20,7 +22,7 @@ const RegisterScreen = ({ navigation }) => {
             Alert.alert("Número de cédula incorrecto");
         }
         else if (password == password1) {
-            fetch('http://54.221.130.211:4003/clientes/', {
+            fetch('http://adaeb302ec9cf4ef7987e8adff15d26f-8798774.us-west-1.elb.amazonaws.com:4003/clientes/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
@@ -44,7 +46,7 @@ const RegisterScreen = ({ navigation }) => {
                         Alert.alert("Creación de cuenta exitosa");
                         navigation.goBack();
                     } else {
-                        Alert.alert("No se pudo crear su cuenta", "Ya existe una cuenta con el número de cédula ingrasado");
+                        Alert.alert("No se pudo crear su cuenta", "Ya existe una cuenta con el número de cédula o el correo ingrasado");
                     }
                 });
 
@@ -56,17 +58,21 @@ const RegisterScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container} >
             <ScrollView>
                 <Text style={styles.title}>Información Personal</Text>
-                <TextInput
+
+                <Input
                     maxLength={20}
-                    style={styles.input}
+                    leftIcon={{ type: 'font-awesome', name: 'user' }}
                     placeholder="Nombre y Apellido"
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={name}
                     onChangeText={(newValue) => setName(newValue)}
+                // onSubmitEditing={}
                 />
-                <TextInput
+                <Input
+                    //ref="phone"
                     maxLength={10}
+                    leftIcon={{ type: 'font-awesome', name: 'mobile' }}
                     style={styles.input}
                     placeholder="Celular"
                     autoCapitalize="none"
@@ -79,8 +85,9 @@ const RegisterScreen = ({ navigation }) => {
                     }}
                     keyboardType="phone-pad"
                 />
-                <TextInput
+                <Input
                     maxLength={35}
+                    leftIcon={{ type: 'font-awesome', name: 'envelope' }}
                     style={styles.input}
                     placeholder="Email"
                     autoCapitalize="none"
@@ -89,8 +96,9 @@ const RegisterScreen = ({ navigation }) => {
                     onChangeText={(newValue) => setEmail(newValue)}
                 />
                 <Text style={styles.title}>Información de Envío</Text>
-                <TextInput
+                <Input
                     maxLength={100}
+                    leftIcon={{ type: 'font-awesome', name: 'map-marker' }}
                     style={styles.input}
                     placeholder="Dirección"
                     autoCapitalize="none"
@@ -99,8 +107,9 @@ const RegisterScreen = ({ navigation }) => {
                     onChangeText={(newValue) => setDirection(newValue)}
                 />
                 <Text style={styles.title}>Información de Inicio de Sesión</Text>
-                <TextInput
+                <Input
                     maxLength={10}
+                    leftIcon={{ type: 'font-awesome', name: 'id-card' }}
                     style={styles.input}
                     placeholder="Cédula"
                     autoCapitalize="none"
@@ -113,8 +122,9 @@ const RegisterScreen = ({ navigation }) => {
                     }}
                     keyboardType="phone-pad"
                 />
-                <TextInput
+                <Input
                     maxLength={20}
+                    leftIcon={{ type: 'font-awesome', name: 'lock' }}
                     secureTextEntry={true}
                     style={styles.input}
                     placeholder="Contraseña"
@@ -123,8 +133,9 @@ const RegisterScreen = ({ navigation }) => {
                     value={password}
                     onChangeText={(newValue) => setPassword(newValue)}
                 />
-                <TextInput
+                <Input
                     maxLength={20}
+                    leftIcon={{ type: 'font-awesome', name: 'lock' }}
                     secureTextEntry={true}
                     style={styles.input}
                     placeholder="Confirmar contraseña"
@@ -134,7 +145,7 @@ const RegisterScreen = ({ navigation }) => {
                     onChangeText={(newValue) => setPassword1(newValue)}
                 />
                 <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text>Registrase</Text>
+                    <Text style={styles.sendButton}>Registrase</Text>
                 </TouchableOpacity>
             </ScrollView>
         </SafeAreaView >
@@ -150,10 +161,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
     },
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
     },
     loginButton: {
         alignItems: "center",
@@ -162,9 +169,13 @@ const styles = StyleSheet.create({
         padding: 10
     },
     title: {
-        marginLeft: 12,
-        fontSize: 20,
-        fontWeight: "bold"
+        marginLeft: 5,
+        fontSize: 22,
+        fontWeight: "bold",
+        marginBottom: 10
+    },
+    sendButton: {
+        color: "white"
     }
 });
 
