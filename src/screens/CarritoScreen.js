@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Image, Button, View, ScrollView} from 'react-native';
-
+import { StyleSheet, ScrollView, View, Text} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Card, Button, ButtonGroup,PricingCard, Badge,Chip,LinearProgress } from 'react-native-elements';
 
 export default function Producto({navigation}) {
     let { cardText, card, cardImage } = styles
@@ -11,7 +12,10 @@ export default function Producto({navigation}) {
     const [result, setResult] = useState();
     const idsuper = navigation.state.params.idSuper;
     const login = navigation.state.params.login;
-    console.log(navigation.state.params.login)
+    const nombre_cli = navigation.state.params.login['nombreCliente'];
+    const nombre_super = navigation.state.params.idSuper['nombreCliente'];
+    console.log(idsuper)
+    console.log(login)
 
     useEffect(() => {
         fetch("https://api-producto5.herokuapp.com/?idSupermercado="+idsuper)
@@ -95,49 +99,65 @@ export default function Producto({navigation}) {
         navigation.navigate("Pagos",{resultado:resultado,total:total, idSuper: navigation.state.params.idSuper , login: navigation.state.params.login})
     }
     
-
+    const [selectedIndex, setSelectedIndex] = useState(0);
     return (
         <ScrollView>
-            <Text>Total:{total.toFixed(2)}</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmite}
-            ><Text>Pagar</Text></TouchableOpacity>
+            
             {producto.map(item => (
-            <View style={styles.espacio}>
-                <View style={styles.fixToText}>
-                    <Image style={cardImage} source={{ uri: item.imagen_producto }} />
-                    <View>
-                        <Text style={cardText}>{item.nombre_producto}</Text>
-                        <Text style={cardText}>${item.precio}</Text>
-                        <Text style={cardText}>Cantidad: {item.count}</Text>
-                        <Text style={cardText}>Total: ${item.total.toFixed(2)}</Text>
-                    </View>
-                </View>
-                <View style={styles.fixToText}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdatezero(item.idProducto)}
-                    ><Text>Vaciar</Text></TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdatemore(item.idProducto)}
-                    ><Text>+</Text></TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleUpdateless(item.idProducto)}
-                    ><Text>-</Text></TouchableOpacity>
-                </View>
+            <Card key={item.idProducto}>
+            <Card.Title>{item.nombre_producto}</Card.Title>
+            <Card.Divider/>
+            <View style={styles.clip1}>
+            <Text>Total: $ {item.total.toFixed(2)}</Text>
             </View>
+            <View>
+            <Card.Image source={{uri: item.imagen_producto}}></Card.Image>
+            </View>
+            <Card.Divider/>
+            <View style={styles.clip2}>
+            <Text>Precio U: $ {item.precio}</Text>
+            
+            
+            </View>
+            <View style={styles.clip2}>
+            <Text>Cantidad: {item.count}</Text>
+            </View>
+            
+            <Card.Divider/>
+            
+            <View style={styles.fixToText}>
+            <Card.Divider/>
+            <Button
+                icon={<Icon name='trash' color='#ffffff' />}
+                title=" Vaciar"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
+                onPress={() => handleUpdatezero(item.idProducto)}/>
+            <Button
+                icon={<Icon name='cart-plus' color='#ffffff' />}
+                title=" Añadir"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
+                onPress={() => handleUpdatemore(item.idProducto)}/>
+            <Button
+                icon={<Icon name='minus-circle' color='#ffffff' />}
+                title=" Quitar"
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30}}
+                onPress={() => handleUpdateless(item.idProducto)}
+                />
+                </View>
+          </Card>
         ))}
+
+            <PricingCard
+            color="#4f9deb"
+            title="Total"
+            price={"$ "+ total.toFixed(2)}
+            info={['Cliente: '+nombre_cli]}
+            button={{ title: ' Comprar', icon: 'shopping-cart', onPress: handleSubmite }}
+            />
+        
         </ScrollView>
         
     )
-}
-
-function comprar(id, nombre, precio) {
-    alert('id: ' + id + " nombre: " + nombre + " precio: " + precio);
-    //onPressIn={() =>comprar(item.idProducto,item.nombre_producto,item.precio)}
 }
 
 const styles = StyleSheet.create({
@@ -164,8 +184,7 @@ const styles = StyleSheet.create({
     },
     fixToText: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginBottom: 15,
+        
     },
     espacio: {
         marginBottom: 15,
@@ -176,6 +195,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#FF6D4D",
         borderRadius: 20,
         padding: 5
+    },
+    clip1: {
+        alignItems: "center",
+        marginBottom: 15,
+        shadowColor: '#F337C2',
+        
+        
+    },
+    clip2: {
+        
+        marginBottom: 15,
+        
     },
     buttonPress: {
         borderColor: "#000066",
