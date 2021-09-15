@@ -27,8 +27,8 @@ const Market = ({ navigation }) => {
             <Card.Divider/>
             <Card.Image source={{uri: item.imagen_supermercado}}></Card.Image>
             <Button
-                icon={<Icon name='star' color='#ffffff' />}
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0, backgroundColor:'#000000'}}
+                icon={<Icon name='store' color='#ffffff' />}
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 315, height: 40}}
                 title={item.nombre_supermercado}
                 onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}/>
           </Card>
