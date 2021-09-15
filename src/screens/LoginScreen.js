@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
                 <Image
                     style={styles.tinyLogo}
-                    source={{ uri: "https://lh3.googleusercontent.com/fife/AAWUweX136kdACYIe1jDdaeldiMtZbpcWpjMq3Lwxqt9m-9YWrYmT49Z-e2aKEXfsUubAE3-3KrvkBZei5HLwrjFdmJ3uf1BlLGB67JQlla4V7xT3snaeJC5_WdNU4YAIwKAw6x-ETsX2RKq02cpFHdzRIRnB52XVXiXmXN0QUgqu0ESPqCDvzgs36vkstKcer2DDHLlQA3A_s1JoYeoFIQn4hR8O4UAcvlJjbPsJski5VLVj3-NJbOoJmEb9dIktQ94qxvVQqTkuvg1lkc2la9-5j2A7bZM-aP2IcOo3JVRXy1klgRkgc6nl4RMiXybhWamhxnijADF5wWK_K_lMQ01ZbcWQTO4B-IqCqAnA7VqTvMA8oK3LxvntGU0MWwVXGPLSrvCMVx30VvfsdXSSou6PITk48PKIzvhXCZUgktYsWe9UEYSDo2I0_Mkq_iFTDQI1FwwDVbAQgL6WEleq7W6a92N84frnA58JEeEFAxzBeh2gVQG9tg4B-DE_5EwHKhAsEaDdVLkEfh3XklbId0HRd0tWw-ppj6hTujdqTzLmkyOl6COa3YhLKvTzH0PWGy5h-PtgdApw34d7GUcDV_J39ifCboZpP3Lt1xW-QRi4smWrVdwVLEoAYZJB6QddfPWjcYlnt7_64xm05D2pLUEsEbIb3wwmEhFXGByZwbwkyrt5IcFl79CSdfbv0mqahOCihoWH5w7BDLDyp2EdBC1qe6UB8sbFikZpg=w1920-h830-ft" }}
+                    source={{ uri: "https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat=png&cs=fFNQTw&docid=https%3A%2F%2Fudlaec-my.sharepoint.com%3A443%2F_api%2Fv2.0%2Fdrives%2Fb!Y7YUHgYySEqIHeEcCzRo6FwccGidoi1Iuc4VDVVw6ymhAQ0I_p25S5OzrwpMahut%2Fitems%2F01J72QG4YXSIKWXQ57RFHIDP2K5DGGEPIX%3Fversion%3DPublished&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvdWRsYWVjLW15LnNoYXJlcG9pbnQuY29tQDU4NWE0ZDkyLWRiMWQtNGJiYi1iNWFjLWM1Mjk5ZTM4OTRlMyIsImlzcyI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCIsIm5iZiI6IjE2MzE3MTgwMDAiLCJleHAiOiIxNjMxNzM5NjAwIiwiZW5kcG9pbnR1cmwiOiJjd0tENHRaenRIOW9ieTk0cFNMTXZFSDd2cnAzeDA4NlZFM04yOGtrWnlrPSIsImVuZHBvaW50dXJsTGVuZ3RoIjoiMTE2IiwiaXNsb29wYmFjayI6IlRydWUiLCJ2ZXIiOiJoYXNoZWRwcm9vZnRva2VuIiwic2l0ZWlkIjoiTVdVeE5HSTJOak10TXpJd05pMDBZVFE0TFRnNE1XUXRaVEV4WXpCaU16UTJPR1U0IiwibmFtZWlkIjoiMCMuZnxtZW1iZXJzaGlwfHVybiUzYXNwbyUzYWFub24jMTNmZDIwMTk5MTIwZDQ5YzUxMjdhYmVhMWQ0NjZkNTdhNjIxYWJlYjk4NDJmMjc5NTJkY2MzNDcyZTczODYyYyIsIm5paSI6Im1pY3Jvc29mdC5zaGFyZXBvaW50IiwiaXN1c2VyIjoidHJ1ZSIsImNhY2hla2V5IjoiMGguZnxtZW1iZXJzaGlwfHVybiUzYXNwbyUzYWFub24jMTNmZDIwMTk5MTIwZDQ5YzUxMjdhYmVhMWQ0NjZkNTdhNjIxYWJlYjk4NDJmMjc5NTJkY2MzNDcyZTczODYyYyIsInNoYXJpbmdpZCI6InprdzB2dUEyVFVHQ1orWCtZZE1iR2ciLCJ0dCI6IjAiLCJ1c2VQZXJzaXN0ZW50Q29va2llIjoiMiJ9.WFJNSHNCeWVDQnA1anEyU3ExUzR2VUlNMzdONSttRmRLRjZFUURsM3pMOD0&cTag=%22c%3A%7B6B159217-BFC3-4E89-81BF-4AE8CC623D17%7D%2C1%22&encodeFailures=1&width=1600&height=755&srcWidth=&srcHeight=" }}
                 />
                 <Input
                     maxLength={10}
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
         marginTop: 150,
         marginBottom: 50,
         alignSelf: "center",
-        width: 300,
-        height: 200,
+        width: 250,
+        height: 250,
     },
     loginButton: {
         alignItems: "center",
