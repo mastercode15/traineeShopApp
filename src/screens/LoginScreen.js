@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, Image,  TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import React, {  useState } from 'react';
+import { SafeAreaView,  Image,  StyleSheet, ScrollView, Alert } from "react-native";
 import { Button, Input} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
         }
         else if (password != 0) {
 
-            fetch('http://54.221.130.211:4005/clientes/login/' + ci + "/" + password, {
+            fetch('http://a3d60ef8193dd4fd68ff8781f2c4e0be-1837864183.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -30,12 +30,12 @@ const LoginScreen = ({ navigation }) => {
 
                 .then((respuestaJson) => {
                     console.log(respuestaJson);
-                    if(respuestaJson.status == undefined){
+                    if(respuestaJson != null){
                         navigation.navigate('Market', {login: respuestaJson})
 
                     }else{
 
-                     alert("contraseña y/o usuario incorrecto");
+                     Alert.alert("contraseña y/o usuario incorrecto");
                 }
 
 
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
     }
     return (
 
-        <SafeAreaView style={styles.container} >
+        <SafeAreaView style={styles.container} key='login' >
             <ScrollView>
 
                 <Image
@@ -59,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
 
                 <Input
                     maxLength={10}
-                    style={styles}
+
                     placeholder="Cédula"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -81,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
                 <Input
                     maxLength={20}
                     secureTextEntry={true}
-                    style={styles}
+
                     placeholder="Contraseña"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -95,13 +95,16 @@ const LoginScreen = ({ navigation }) => {
                         />
                       }
                 />
+                <Button
+                   onPress={handleSubmit}
+                    title="Iniciar sesión"
+                    buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 20, backgroundColor:'#F337C2', width: 200,height: 30,  alignSelf: "center" }}
+                />
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text>Iniciar sesión</Text>
-                </TouchableOpacity>
                 <Button
                     onPress={() => navigation.navigate('Register')}
                     title="Registro"
+                    buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30, alignSelf: "center"}}
                 />
             </ScrollView>
         </SafeAreaView >
