@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, TextInput, StyleSheet, Text, Picker, Modal, TouchableOpacity, CheckBox, SafeAreaView } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Picker, Modal, TouchableOpacity, SafeAreaView, LogBox } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
 
 //Local payments saved for testing purpouses
@@ -11,15 +11,18 @@ const payBank = {'bank1':0,'bank2':1,'bank3':2}
 
 //const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const bAPIUH = "http://18.118.160.143:5000/users?token="
-const bAPIPH = "http://18.118.160.143:5000/pays?token="
+const bAPIUH = "http://3.135.239.12:5000/users?token="
+const bAPIPH = "http://3.135.239.12:5000/pays?token="
+
+const mAPIBH = "http://a2ade0760175e4853b6083a93920e8c1-1662298016.us-west-1.elb.amazonaws.com:8081/api/crearfactura?"
+const mAPIDH = "http://a2ade0760175e4853b6083a93920e8c1-1662298016.us-west-1.elb.amazonaws.com:8081/api/creardetalle/?"
 
 const defaultmsg = "Ingresar mensaje aquí";
 const noFillmsg = "Llene todos los campos que faltan";
 const badAcc = "Cuenta de contener 10 dígitos";
 const badCard = "Tarjeta de contener 16 dígitos";
 
-const succMsg = "Transacción exitosa";
+const succMsg = "Su compra se ha realizado con éxito";
 
 const noUser = "Usuario o cuenta/tarjeta no existen";
 const intError = "Error interno del sistema"
@@ -45,11 +48,24 @@ const PayPage = ({navigation}) => {
     const [usrAcc, setUsrAcc] = useState("");
     const [modalMsg, setModalMsg] = useState(defaultmsg);
 
+    
     const savedPrice = navigation.state.params.total;
     const savedMark = navigation.state.params.idSuper;
     const savedID = navigation.state.params.login['clienteId'];
     const savedDNI = navigation.state.params.login['cedula'];
+    const savedName = navigation.state.params.login['nombreCliente'];
     const proList = navigation.state.params.resultado; //Array of dicts
+    
+    LogBox.ignoreAllLogs();
+
+    /*
+    const savedPrice = 12.50;
+    const savedMark = 1;
+    const savedID = 1;
+    const savedDNI = "0603420563";
+    const savedName = "Danu Jhonson"
+    const proList = null; //Array of dicts
+    */
 
     //console.log(savedPrice, savedMark, savedID, savedDNI, proList);
 
@@ -144,8 +160,6 @@ const PayPage = ({navigation}) => {
             <TextInput editable ={!btnDis} onChangeText={(value) => setUsrAcc(value)} maxLength={16} keyboardType={'numeric'} placeholder="Ej: 1000000000 / 4500123412341234"/>
             <Text />
 
-            
-
             {savedP}         
 
           </View>
@@ -227,17 +241,17 @@ const PayPage = ({navigation}) => {
 
       var code;
       
-      var url = bAPIPH+savedMark+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice.toFixed(2);
+      var url = bAPIPH+(savedMark - 1)+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice;
 
       if(!putPM && savedpays.length > 0)
-        url = bAPIPH+savedMark+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice.toFixed(2);
+        url = bAPIPH+(savedMark - 1)+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice;
 
       fetch(url, {method: 'POST'})
       .then((response) => {
         code = response.status;
         response.json().then()
         .then( (data) => {
-          if(code == 200) valBill(token); 
+          if(code == 200) valBill(); 
           else if (code == 404) {
             if (data.code == 1) modalRaise(modalTypes['NOFUNDS']);
             else if (data.code == 2) modalRaise(modalTypes['NOUSER']);
@@ -254,74 +268,102 @@ const PayPage = ({navigation}) => {
 
     }
 
-    const valBill = (token) => {
+    const valBill = () => {
 
       const billNum = rndBill()
-      var code;
-      var url = "http://54.221.130.211:8081/api/crear?total="+savedPrice+"&fecha=2021-09-10&metodo_pago=Electrónico&cuenta_idcuenta=1"+"&supermercado_idsupermercado="+(savedMark + 1)+"&cliente_idcliente="+savedID+"&idfactura="+billNum;
+      //var code;
+      var url= mAPIBH + "total="+savedPrice+"&fecha=2021-09-14&metodo_pago=Electronico&cuenta_idcuenta=1&supermercado_idsupermercado=" + savedMark +"&cliente_idcliente="+savedID+"&idfactura="+billNum;
 
-      //console.log(url)
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = (e) => {
+        if (request.readyState !== 4) {
+          return;
+        }
 
-      fetch(url, {method: 'POST', mode:'no-cors'})
-      .then((response) => 
-        code = response.status
-        ).then( (data) => {
-          //console.log(code);
-          if(code == 0) valDispatch(billNum); 
-          else modalRaise(modalTypes['NOMARKET']);})
-      .catch((error) => {
-        //Esto es que no se puede conectar al banco
-        //console.log("Error");
-        modalRaise(modalTypes['NOMARKET']);
-      });
+        if (request.status === 200) {
+          //console.log('success');
+          //modalRaise(modalTypes['OK']);
+          valDispatch(billNum);
+        } else {
+          console.log('error');
+          modalRaise(modalTypes['NOMARKET']);
+        }
+      };
+
+      request.open('POST', url);
+      request.send();
       
-
+      //modalRaise(modalTypes['OK']);
 
     }
 
     const valDispatch = (billid) => {
 
-      //for (i=0;i<productos.lenght;i++)
+      //console.log(proList[0]['idProducto'])
+      var valid = true
 
-      var code;
-      var url = "http://54.221.130.211:8081/api/creardetalle/?cantidad="+1+"&valor="+2.24+"&producto_idproducto="+1+"&factura_idfactura="+billid;
+      for (var i = 0; i < proList.length; i++){
+        const quan = proList[i]['count'];
+        const cost = proList[i]['precio'];
+        const pid = proList[i]['idProducto'];
 
-      //console.log(url)
+        var url = mAPIDH +"cantidad="+quan+"&valor="+cost+"&producto_idproducto="+pid+"&factura_idfactura="+billid+"&iddetalle=6"
+     
+        //console.log(url);
 
-      fetch(url, {method: 'POST', mode:'no-cors'})
-      .then((response) => 
-        code = response.status
-        ).then( (data) => {
-          //console.log(code);
-          if(code == 0) modalRaise(modalTypes['OK']); 
-          else modalRaise(modalTypes['NOMARKET']);})
-      .catch((error) => {
-        //Esto es que no se puede conectar al banco
-        //console.log("Error");
-        modalRaise(modalTypes['NOMARKET']);
-      });    
+        var request = new XMLHttpRequest();
+        request.onreadystatechange = (e) => {
+          if (request.readyState !== 4) {
+            return;
+          }
+
+          if (request.status === 200) {
+            //continue;
+          } else {
+            valid = false;
+            //break;
+          }
+        };
+
+        request.open('POST', url);
+        request.send();
+
+      }
+
+      if(valid) modalRaise(modalTypes['OK']);
+      else modalRaise(modalTypes['NOMARKET']);
 
     }
 
+    const modalAction = () => {
+      setModalOpen(!modalOpen); 
+      if (modalMsg === succMsg)
+        navigation.navigate('Market', {login: navigation.state.params.login});
+      else{
+        setModalMsg(defaultmsg);
+        setBtnDis(!btnDis);
+      }
+    }
 
     //La página en sí
     return (
-        <SafeAreaView style={{backgroundColor: "#FFFFFF", flex:1}}>
+        <SafeAreaView style={{backgroundColor: "#FFFFFF", flex:1, padding:10}}>
         
             <Modal animationType="fade" transparent={true} visible={modalOpen} onRequestClose={() => { setModalOpen(!modalOpen); }}> 
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text>{modalMsg}</Text>
+                        <Text style={{color: "#FFFFFF"}}>{modalMsg}</Text>
                         <Text></Text> 
-                        <TouchableOpacity style={styles.modalbtn_style} onPress={() => {setModalMsg(defaultmsg);setModalOpen(!modalOpen);setBtnDis(!btnDis);}} >
+                        <TouchableOpacity style={styles.modalbtn_style} onPress={() => {modalAction()}} >
                             <Text style= {styles.modaltxt_style}>Entendido</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
 
+            
             <Text style={styles.labeltxt_style}>Nombre del cliente:</Text>
-            <TextInput value = "Danu Jhonson" editable = {false} />
+            <TextInput value = {savedName} editable = {false} />
             <Text />
             <Text style={styles.labeltxt_style}>Dirección:</Text>
             <TextInput editable = {!btnDis} onChangeText={(value) => setUsrAddr(value)} maxLength={100} placeholder="Escriba aquí la dirección para la factura"/>
@@ -354,7 +396,7 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F337C2FF",
+      backgroundColor: "#FF6666",
       width: '45%',
       height: 50,
     },
@@ -363,7 +405,7 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F337C211",
+      backgroundColor: "#FF666622",
       width: '45%',
       height: 50,
     },
@@ -397,7 +439,7 @@ const styles = StyleSheet.create({
       marginVertical: 10,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F337C2",
+      backgroundColor: "#FF6666",
       width: 100,
       height: 45,
     },
@@ -417,7 +459,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
       margin: 30,
-      backgroundColor: "#FFFFFFDD",
+      backgroundColor: "#000000DD",
       borderRadius: 25,
       padding: 35,
       alignItems: "center",
