@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, Image, Button, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import React, {  useState } from 'react';
+import { SafeAreaView,  Image,  StyleSheet, ScrollView, Alert } from "react-native";
+import { Button, Input} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
     const [ci, setCi] = useState('');
@@ -8,11 +10,11 @@ const LoginScreen = ({ navigation }) => {
     const handleSubmit = () => {
 
         if ( !ci || !password ) {
-            alert("Por favor llene todos los campos");
+            Alert.alert("Por favor llene todos los campos");
 
         }
         else if (ci.length > 10) {
-            alert("contraseña y/o usuario incorrecto");
+            Alert.alert("contraseña y/o usuario incorrecto");
         }
         else if (password != 0) {
 
@@ -25,24 +27,27 @@ const LoginScreen = ({ navigation }) => {
 
             })
                 .then(response => response.json())
-                .then((respuestaJson) => {
-                    setLogin(respuestaJson);
 
+                .then((respuestaJson) => {
+                    console.log(respuestaJson);
                     if(respuestaJson != null){
                         navigation.navigate('Market', {login: respuestaJson})
-                    }else{
-                        alert("contraseña y/o usuario incorrecto");
 
-                    }
+                    }else{
+
+                     Alert.alert("contraseña y/o usuario incorrecto");
+                }
+
 
                 });
+
 
 
         }
     }
     return (
 
-        <SafeAreaView style={styles.container} >
+        <SafeAreaView style={styles.container} key='login' >
             <ScrollView>
 
                 <Image
@@ -52,9 +57,9 @@ const LoginScreen = ({ navigation }) => {
                 />
 
 
-                <TextInput
+                <Input
                     maxLength={10}
-                    style={styles.input}
+
                     placeholder="Cédula"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -65,24 +70,41 @@ const LoginScreen = ({ navigation }) => {
                         }
                     }}
                     keyboardType="phone-pad"
+                    leftIcon={
+                        <Icon
+                          name='user'
+                          size={24}
+                          color='black'
+                        />
+                      }
                 />
-                <TextInput
+                <Input
                     maxLength={20}
                     secureTextEntry={true}
-                    style={styles.input}
+
                     placeholder="Contraseña"
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={password}
                     onChangeText={(newValue) => setPassword(newValue)}
+                    leftIcon={
+                        <Icon
+                          name='lock'
+                          size={24}
+                          color='black'
+                        />
+                      }
+                />
+                <Button
+                   onPress={handleSubmit}
+                    title="Iniciar sesión"
+                    buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 20, backgroundColor:'#F337C2', width: 200,height: 30,  alignSelf: "center" }}
                 />
 
-                <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
-                    <Text style={styles.loginText}>Iniciar sesión</Text>
-                </TouchableOpacity>
                 <Button
                     onPress={() => navigation.navigate('Register')}
                     title="Registro"
+                    buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 100,height: 30, alignSelf: "center"}}
                 />
             </ScrollView>
         </SafeAreaView >
@@ -113,7 +135,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#DDDDDD",
         margin: 12,
-        padding: 10
+        padding: 10,
+
     },
     title: {
         marginLeft: 12,
