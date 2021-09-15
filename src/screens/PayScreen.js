@@ -241,10 +241,10 @@ const PayPage = ({navigation}) => {
 
       var code;
       
-      var url = bAPIPH+(savedMark - 1)+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice.toFixed(2);
+      var url = bAPIPH+(savedMark - 1)+payType[selectedType]+payBank[selectedBank]+"-"+token+"-"+savedPrice;
 
       if(!putPM && savedpays.length > 0)
-        url = bAPIPH+(savedMark - 1)+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice.toFixed(2);
+        url = bAPIPH+(savedMark - 1)+savedpays[selPay]['type']+savedpays[selPay]['bid']+"-"+savedpays[selPay]['token']+"-"+savedPrice;
 
       fetch(url, {method: 'POST'})
       .then((response) => {
@@ -272,7 +272,7 @@ const PayPage = ({navigation}) => {
 
       const billNum = rndBill()
       //var code;
-      var url= mAPIBH + "total="+savedPrice.toFixed(2)+"&fecha=2021-09-14&metodo_pago=Electronico&cuenta_idcuenta=1&supermercado_idsupermercado=" + savedMark +"&cliente_idcliente="+savedID+"&idfactura="+billNum;
+      var url= mAPIBH + "total="+savedPrice+"&fecha=2021-09-14&metodo_pago=Electronico&cuenta_idcuenta=1&supermercado_idsupermercado=" + savedMark +"&cliente_idcliente="+savedID+"&idfactura="+billNum;
 
       var request = new XMLHttpRequest();
       request.onreadystatechange = (e) => {
@@ -309,7 +309,7 @@ const PayPage = ({navigation}) => {
 
         var url = mAPIDH +"cantidad="+quan+"&valor="+cost+"&producto_idproducto="+pid+"&factura_idfactura="+billid+"&iddetalle=6"
      
-        console.log(url);
+        //console.log(url);
 
         var request = new XMLHttpRequest();
         request.onreadystatechange = (e) => {
@@ -370,7 +370,7 @@ const PayPage = ({navigation}) => {
             <Text />
 
             <Text style={styles.labeltxt_style}>Valor a pagar:</Text>
-            <TextInput value = {"$" + savedPrice.toFixed(2)} editable = {false} />
+            <TextInput value = {"$" + savedPrice} editable = {false} />
             <Text />
 
             {savedPM()}
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F337C2FF",
+      backgroundColor: "#FF6666",
       width: '45%',
       height: 50,
     },
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "#F337C211",
+      backgroundColor: "#FF666622",
       width: '45%',
       height: 50,
     },
