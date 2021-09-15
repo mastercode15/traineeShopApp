@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ScrollView, View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Card, Button, ButtonGroup,PricingCard, Badge,Chip,LinearProgress } from 'react-native-elements';
+import { Card, Button, Image,PricingCard} from 'react-native-elements';
 
 export default function Producto({navigation}) {
     let { cardText, card, cardImage } = styles
@@ -13,7 +13,6 @@ export default function Producto({navigation}) {
     const idsuper = navigation.state.params.idSuper;
     const login = navigation.state.params.login;
     const nombre_cli = navigation.state.params.login['nombreCliente'];
-    const nombre_super = navigation.state.params.idSuper['nombreCliente'];
     console.log(idsuper)
     console.log(login)
 
@@ -25,25 +24,8 @@ export default function Producto({navigation}) {
                     datos[i] = { ...datos[i], count: 0, total: 0 }
                 })
                 setProducto(datos)
-
             })
-
-        fetch('http://54.221.130.211:8888/venta/supermercado/1', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => response.json())
-            .then((respuestaJson) => {
-                setResult(respuestaJson);
-
-            });
-        console.log(result)
     }, [])
-
-
 
     const handleUpdatemore = (id) => {
         const updateTask = producto.map((item) => {
@@ -96,7 +78,8 @@ export default function Producto({navigation}) {
 
     const handleSubmite = () => {
         const resultado = producto.filter((prod) =>prod.total != 0)
-        navigation.navigate("Pagos",{resultado:resultado,total:total, idSuper: navigation.state.params.idSuper , login: navigation.state.params.login})
+        console.log(resultado, total.toFixed(2));
+        navigation.navigate("Pagos",{resultado:resultado,total:total.toFixed(2), idSuper: navigation.state.params.idSuper , login: navigation.state.params.login})
     }
     
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -110,9 +93,7 @@ export default function Producto({navigation}) {
             <View style={styles.clip1}>
             <Text>Total: $ {item.total.toFixed(2)}</Text>
             </View>
-            <View>
-            <Card.Image source={{uri: item.imagen_producto}}></Card.Image>
-            </View>
+            <Image style={styles.cardImage} source={{uri: item.imagen_producto}}></Image>
             <Card.Divider/>
             <View style={styles.clip2}>
             <Text>Precio U: $ {item.precio}</Text>
@@ -148,7 +129,7 @@ export default function Producto({navigation}) {
         ))}
 
             <PricingCard
-            color="#4f9deb"
+            color="#ff6666"
             title="Total"
             price={"$ "+ total.toFixed(2)}
             info={['Cliente: '+nombre_cli]}
@@ -178,13 +159,13 @@ const styles = StyleSheet.create({
         }
     },
     cardImage: {
-        width: '50%',
-        height: 200,
-        resizeMode: 'cover'
+        width: 320,
+        height: 290,
+        alignSelf: 'center',
     },
     fixToText: {
         flexDirection: 'row',
-        
+        alignSelf: "center",
     },
     espacio: {
         marginBottom: 15,

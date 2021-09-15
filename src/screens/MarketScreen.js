@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { StyleSheet, Text, ScrollView} from 'react-native';
+import { StyleSheet, Text, ScrollView, Image} from 'react-native';
 import { Card, Button, Icon } from 'react-native-elements';
 
 function uselistaMarket(){
@@ -25,10 +25,10 @@ const Market = ({ navigation }) => {
           <Card key={item.idSupermercado}>
             <Card.Title>{item.nombre_supermercado}</Card.Title>
             <Card.Divider/>
-            <Card.Image source={{uri: item.imagen_supermercado}}></Card.Image>
+            <Image style={styles.cardImage} source={{uri: item.imagen_supermercado}}></Image>
             <Button
                 icon={<Icon name='store' color='#ffffff' />}
-                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, backgroundColor:'#000000', width: 315, height: 40}}
+                buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 10, backgroundColor:'#000000', width: 320, height: 40, alignSelf:'center'}}
                 title={item.nombre_supermercado}
                 onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}/>
           </Card>
@@ -57,16 +57,11 @@ const styles = StyleSheet.create({
       }
     },
     cardImage: {
-      width: '100%',
-      height: 200,
-      resizeMode: 'cover'
+      width: 320,
+      height: 290,
+      alignSelf: 'center'
     },
 
   });
 
   export default Market;
-
-/*<TouchableOpacity style={card} key={item.idSupermercado} onPressIn={() => navigation.navigate('CarritoScreen', { idSuper: item.idSupermercado, login: navigation.state.params.login })}>
-<Image style={cardImage} source={{uri: item.imagen_supermercado}}/>
-<Text style={cardText}>{item.nombre_supermercado}</Text>
-</TouchableOpacity> */

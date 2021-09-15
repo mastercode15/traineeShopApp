@@ -119,7 +119,7 @@ const PayPage = ({navigation}) => {
         );
       }
       else{
-        savedP.push(<Text />)
+        savedP.push(<Text key="Pay"/>)
       }
 
       if (putPM){
