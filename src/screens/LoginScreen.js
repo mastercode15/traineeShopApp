@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
         }
         else if (password != 0) {
 
-            fetch('http://a3d60ef8193dd4fd68ff8781f2c4e0be-1837864183.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
+            fetch('http://ae68e5368040242e6a68d4c1c17760ec-1740643031.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
                 <Image
                     style={styles.tinyLogo}
-                    source={{ uri: "https://southcentralus1-mediap.svc.ms/transform/thumbnail?provider=spo&inputFormat=png&cs=fFNQTw&docid=https%3A%2F%2Fudlaec-my.sharepoint.com%3A443%2F_api%2Fv2.0%2Fdrives%2Fb!Y7YUHgYySEqIHeEcCzRo6FwccGidoi1Iuc4VDVVw6ymhAQ0I_p25S5OzrwpMahut%2Fitems%2F01J72QG4YXSIKWXQ57RFHIDP2K5DGGEPIX%3Fversion%3DPublished&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAvdWRsYWVjLW15LnNoYXJlcG9pbnQuY29tQDU4NWE0ZDkyLWRiMWQtNGJiYi1iNWFjLWM1Mjk5ZTM4OTRlMyIsImlzcyI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCIsIm5iZiI6IjE2MzE3MTgwMDAiLCJleHAiOiIxNjMxNzM5NjAwIiwiZW5kcG9pbnR1cmwiOiJjd0tENHRaenRIOW9ieTk0cFNMTXZFSDd2cnAzeDA4NlZFM04yOGtrWnlrPSIsImVuZHBvaW50dXJsTGVuZ3RoIjoiMTE2IiwiaXNsb29wYmFjayI6IlRydWUiLCJ2ZXIiOiJoYXNoZWRwcm9vZnRva2VuIiwic2l0ZWlkIjoiTVdVeE5HSTJOak10TXpJd05pMDBZVFE0TFRnNE1XUXRaVEV4WXpCaU16UTJPR1U0IiwibmFtZWlkIjoiMCMuZnxtZW1iZXJzaGlwfHVybiUzYXNwbyUzYWFub24jMTNmZDIwMTk5MTIwZDQ5YzUxMjdhYmVhMWQ0NjZkNTdhNjIxYWJlYjk4NDJmMjc5NTJkY2MzNDcyZTczODYyYyIsIm5paSI6Im1pY3Jvc29mdC5zaGFyZXBvaW50IiwiaXN1c2VyIjoidHJ1ZSIsImNhY2hla2V5IjoiMGguZnxtZW1iZXJzaGlwfHVybiUzYXNwbyUzYWFub24jMTNmZDIwMTk5MTIwZDQ5YzUxMjdhYmVhMWQ0NjZkNTdhNjIxYWJlYjk4NDJmMjc5NTJkY2MzNDcyZTczODYyYyIsInNoYXJpbmdpZCI6InprdzB2dUEyVFVHQ1orWCtZZE1iR2ciLCJ0dCI6IjAiLCJ1c2VQZXJzaXN0ZW50Q29va2llIjoiMiJ9.WFJNSHNCeWVDQnA1anEyU3ExUzR2VUlNMzdONSttRmRLRjZFUURsM3pMOD0&cTag=%22c%3A%7B6B159217-BFC3-4E89-81BF-4AE8CC623D17%7D%2C1%22&encodeFailures=1&width=1600&height=755&srcWidth=&srcHeight=" }}
+                    source={{ uri: "https://scontent.fuio1-2.fna.fbcdn.net/v/t1.6435-9/242076290_4353530921361722_3549974586712822080_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeHAkDUYAull_OVEETrDdxJJkg1j5V4z-fCSDWPlXjP58GKc1kBKNo19twh0AmpP-RdhjOz83HNMfltLDFPwJ10m&_nc_ohc=DU5-6mBrnT0AX9407n3&_nc_oc=AQmevZcwQ5FxBzqtnJsDuYO_ui_JObuobwHBOU5FRtTJPbH2vTXlRHa17z5DLZKSl2uwDwB5wbWISrPfh1lzAMUx&tn=eEO5899cKfEjBrLC&_nc_ht=scontent.fuio1-2.fna&oh=bfa1726783a0dcad391bf8c4f8981879&oe=616895C5" }}
                 />
                 <Input
                     maxLength={10}
