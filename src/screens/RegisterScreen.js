@@ -22,7 +22,7 @@ const RegisterScreen = ({ navigation }) => {
             Alert.alert("Número de cédula incorrecto");
         }
         else if (password == password1) {
-            fetch('http://ab8be0d726b87422f9d9d4eb75bee11a-215326113.us-west-1.elb.amazonaws.com:4003/clientes/', {
+            fetch('http://ae15aed604280424696205cdd4255744-632254846.us-west-1.elb.amazonaws.com:4003/clientes/', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
