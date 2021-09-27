@@ -1,6 +1,6 @@
-import React, {  useState } from 'react';
-import { SafeAreaView,  Image,  StyleSheet, ScrollView, Alert, View } from "react-native";
-import { Button, Input} from 'react-native-elements';
+import React, { useState } from 'react';
+import { SafeAreaView, Image, StyleSheet, ScrollView, Alert, View } from "react-native";
+import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
     const [login, setLogin] = useState([])
     const handleSubmit = () => {
 
-        if ( !ci || !password ) {
+        if (!ci || !password) {
             Alert.alert("Por favor llene todos los campos");
 
         }
@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
         }
         else if (password != 0) {
 
-            fetch('http://ae68e5368040242e6a68d4c1c17760ec-1740643031.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
+            fetch('http://ae48f17e287af493ca472bd0ba20c2ab-1831940168.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -30,13 +30,13 @@ const LoginScreen = ({ navigation }) => {
 
                 .then((respuestaJson) => {
                     console.log(respuestaJson);
-                    if(respuestaJson != null){
-                        navigation.navigate('Market', {login: respuestaJson})
+                    if (respuestaJson != null) {
+                        navigation.navigate('Market', { login: respuestaJson })
 
-                    }else{
+                    } else {
 
-                     Alert.alert("contraseña y/o usuario incorrecto");
-                }
+                        Alert.alert("contraseña y/o usuario incorrecto");
+                    }
 
 
                 });
@@ -69,11 +69,11 @@ const LoginScreen = ({ navigation }) => {
                     keyboardType="phone-pad"
                     leftIcon={
                         <Icon
-                          name='user'
-                          size={24}
-                          color='black'
+                            name='user'
+                            size={24}
+                            color='black'
                         />
-                      }
+                    }
                 />
                 <Input
                     maxLength={20}
@@ -86,25 +86,25 @@ const LoginScreen = ({ navigation }) => {
                     onChangeText={(newValue) => setPassword(newValue)}
                     leftIcon={
                         <Icon
-                          name='lock'
-                          size={24}
-                          color='black'
+                            name='lock'
+                            size={24}
+                            color='black'
                         />
-                      }
+                    }
                 />
                 <View style={styles.fixToText}>
                     <Button
-                    onPress={handleSubmit}
+                        onPress={handleSubmit}
                         title="Iniciar sesión"
-                        buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 20, marginTop: 30, backgroundColor:'#FF6666', width: 150, height: 50,  alignSelf: "center" }}
+                        buttonStyle={{ borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 20, marginTop: 30, backgroundColor: '#FF6666', width: 150, height: 50, alignSelf: "center" }}
                     />
                     <Button
                         onPress={() => navigation.navigate('Register')}
                         title="Registro"
-                        buttonStyle={{borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, marginTop: 30, backgroundColor:'#000000', width: 150, height: 50, alignSelf: "center"}}
+                        buttonStyle={{ borderRadius: 10, marginLeft: 10, marginRight: 10, marginBottom: 15, marginTop: 30, backgroundColor: '#000000', width: 150, height: 50, alignSelf: "center" }}
                     />
                 </View>
-                
+
             </ScrollView>
         </SafeAreaView >
 
