@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
         }
         else if (password != 0) {
 
-            fetch('http://ae48f17e287af493ca472bd0ba20c2ab-1831940168.us-west-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
+            fetch('http://ab4e31fc37b904197aff9ec9a1204cef-937989777.us-east-1.elb.amazonaws.com:4005/clientes/login/' + ci + "/" + password, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
