@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
                 <Image
                     style={styles.tinyLogo}
-                    source={{ uri: "https://scontent.fuio1-2.fna.fbcdn.net/v/t1.6435-9/242076290_4353530921361722_3549974586712822080_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeHAkDUYAull_OVEETrDdxJJkg1j5V4z-fCSDWPlXjP58GKc1kBKNo19twh0AmpP-RdhjOz83HNMfltLDFPwJ10m&_nc_ohc=DU5-6mBrnT0AX9407n3&_nc_oc=AQmevZcwQ5FxBzqtnJsDuYO_ui_JObuobwHBOU5FRtTJPbH2vTXlRHa17z5DLZKSl2uwDwB5wbWISrPfh1lzAMUx&tn=eEO5899cKfEjBrLC&_nc_ht=scontent.fuio1-2.fna&oh=bfa1726783a0dcad391bf8c4f8981879&oe=616895C5" }}
+                    source={{ uri: "https://scontent.fuio1-2.fna.fbcdn.net/v/t39.30808-6/242192074_4353530924695055_1133008269259118753_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=730e14&_nc_eui2=AeH1tJW_Z9YsDbITxzL0BK5ReUlXfTXPzSJ5SVd9Nc_NItebx9FHVTXxRA3sbstTV6A82tuFPhd2AyMdadhZlhJU&_nc_ohc=bQfY-2Z0Af8AX9BoBWd&_nc_ht=scontent.fuio1-2.fna&oh=509be03104f70c7608fab24509d92294&oe=61973D9A" }}
                 />
                 <Input
                     maxLength={10}
