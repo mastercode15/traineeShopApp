@@ -11,11 +11,11 @@ const payBank = {'bank1':0,'bank2':1,'bank3':2}
 
 //const delay = ms => new Promise(res => setTimeout(res, ms));
 
-const bAPIUH = "http://18.116.14.34:5000/users?token="
-const bAPIPH = "http://18.116.14.34:5000/pays?token="
+const bAPIUH = "http://18.224.2.137:5000/users?token="
+const bAPIPH = "http://18.224.2.137:5000/pays?token="
 
-const mAPIBH = "http://abc8a079deb9b4289bbfb8841ee46116-717543010.us-west-1.elb.amazonaws.com:8081/api/crearfactura?"
-const mAPIDH = "http://abc8a079deb9b4289bbfb8841ee46116-717543010.us-west-1.elb.amazonaws.com:8081/api/creardetalle/?"
+const mAPIBH = "http://ac47315cad2db40caab4b9232458634e-1979136430.us-east-1.elb.amazonaws.com:8081/api/crearfactura?"
+const mAPIDH = "http://ac47315cad2db40caab4b9232458634e-1979136430.us-east-1.elb.amazonaws.com:8081/api/creardetalle/?"
 
 const defaultmsg = "Ingresar mensaje aquí";
 const noFillmsg = "Llene todos los campos que faltan";
